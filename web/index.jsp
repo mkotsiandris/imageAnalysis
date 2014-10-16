@@ -1,24 +1,29 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: marioskotsiandris
-  Date: 10/16/14
-  Time: 23:59
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 <html>
+<style type="text/css">
+    body {
+        background-image: url('http://cdn3.crunchify.com/wp-content/uploads/2013/03/Crunchify.bg_.300.png');
+    }
+</style>
+
 <head>
-    <title>File Uploading Form</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Crunchify JSP Servlet Example</title>
 </head>
 <body>
-<h3>File Upload:</h3>
-Select a file to upload: <br />
-<form action="UploadServlet" method="post"
-      enctype="multipart/form-data">
-    <input type="file" name="file" size="50" />
-    <br />
-    <input type="submit" value="Upload File" />
-</form>
+
+<div align="center" style="margin-top: 50px;">
+
+    <form action="FormConstroller">
+        Please enter your Username: <input type="text" name="username" size="20px"> <br>
+        Please enter your Password: <input type="text" name="password" size="20px"> <br><br>
+        <input type="submit" value="submit">
+    </form>
+
+</div>
+
 </body>
 </html>
