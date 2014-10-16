@@ -1,6 +1,6 @@
-package com.helpers;
+package image.helpers;
 
-import com.models.ImageModel;
+import image.models.ImageModel;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 

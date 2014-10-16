@@ -1,5 +1,5 @@
 
-package com.helpers;
+package image.helpers;
 
 import ij.IJ;
 import ij.ImagePlus;

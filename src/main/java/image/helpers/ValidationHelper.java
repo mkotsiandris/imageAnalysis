@@ -1,4 +1,4 @@
-package com.helpers;
+package image.helpers;
 
 
 import java.io.File;

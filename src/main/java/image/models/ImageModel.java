@@ -1,24 +1,10 @@
-package com.models;
+package image.models;
 
-import com.helpers.ImageModelHelper;
-import com.helpers.ProcessHelper;
-import com.helpers.ValidationHelper;
+import image.helpers.ImageModelHelper;
+import image.helpers.ProcessHelper;
+import image.helpers.ValidationHelper;
 import ij.IJ;
 import ij.ImagePlus;
-import ij.measure.Measurements;
-import ij.measure.ResultsTable;
-import ij.plugin.filter.Analyzer;
-import ij.plugin.filter.ParticleAnalyzer;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.stream.ImageInputStream;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.Iterator;
 
 public class ImageModel extends ImagePlus {
 
