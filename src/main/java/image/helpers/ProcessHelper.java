@@ -119,5 +119,6 @@ public class ProcessHelper {
 		cal.xOrigin = originX / pX;
 		cal.yOrigin = originY / pY;
 	}
+
 }
 
