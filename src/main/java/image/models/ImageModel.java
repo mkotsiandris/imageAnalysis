@@ -45,7 +45,6 @@ public class ImageModel extends ImagePlus {
 		ImageModelHelper.readImageAndDisplayMetaData(this.filePath);
 	}
 
-
 	public String getImageType() {
 		return ImageModelHelper.getImageType(this);
 	}
@@ -63,5 +62,4 @@ public class ImageModel extends ImagePlus {
 		}
 		return this.width;
 	}
-
 }
