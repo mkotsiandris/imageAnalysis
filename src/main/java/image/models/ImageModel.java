@@ -9,7 +9,6 @@ import ij.ImagePlus;
 public class ImageModel extends ImagePlus {
 
 	public String filePath;
-	public String type;
 	private int height = -1;
 	private int width = -1;
 	private ImagePlus imp;

@@ -1,11 +1,9 @@
-package servlet;
-
-import javax.faces.bean.ManagedBean;
+package web;
 
 
 public class User {
 	private Integer id;
-	public String userName;
+	private String userName;
 	private String password;
 	private String firstName;
 	private String lastName;
