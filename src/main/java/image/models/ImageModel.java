@@ -6,6 +6,9 @@ import image.helpers.ValidationHelper;
 import ij.IJ;
 import ij.ImagePlus;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 public class ImageModel extends ImagePlus {
 
 	public String filePath;
@@ -18,6 +21,10 @@ public class ImageModel extends ImagePlus {
 	public ImageModel(String thePath) {
 		this.filePath = String.valueOf(thePath);
 		this.imp = IJ.openImage(this.filePath);
+	}
+
+	public ImageModel(String imageTitle, BufferedImage theImage) {
+		this.imp = new ImagePlus(imageTitle, theImage);
 	}
 
 	private void validateFilepath(String filePath) {

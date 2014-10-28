@@ -1,5 +1,7 @@
 package web;
 
+import ij.ImagePlus;
+import image.models.ImageModel;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -8,10 +10,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
 @ManagedBean(name = "indexController")
 @ViewScoped
@@ -20,6 +21,7 @@ public class IndexController {
 	private final String FORM_SUBMITTED = "The form submitted successfully!";
 	private final String ERROR_OCURED = "An error ocurred during submission!";
 	private static final int BUFFER_SIZE = 6124;
+	private final String DIR_PATH = "/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files";
 
 	private FormModel formModel;
 	private UploadedFile uploadedFile;
@@ -46,27 +48,40 @@ public class IndexController {
 	public void handleFileUpload(FileUploadEvent event) {
 		ExternalContext extContext =
 				FacesContext.getCurrentInstance().getExternalContext();
-		File result = new File(("/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files" + event.getFile().getFileName()));
-		System.out.println(extContext.getRealPath
-				("//WEB-INF//files//" + event.getFile().getFileName()));
+		File result = new File((DIR_PATH + event.getFile().getFileName()));
 
 		try {
-			FileOutputStream fileOutputStream = new FileOutputStream(result);
+			FileOutputStream fileOutputStream;
 
 			byte[] buffer = new byte[BUFFER_SIZE];
 
 			int bulk;
 			InputStream inputStream = event.getFile().getInputstream();
-			while (true) {
-				bulk = inputStream.read(buffer);
-				if (bulk < 0) {
-					break;
-				}
-				fileOutputStream.write(buffer, 0, bulk);
-				fileOutputStream.flush();
+			DataInputStream dataInputStream = new DataInputStream(inputStream);
+
+			int filesCount = dataInputStream.readInt();
+			File[] files = new File[filesCount];
+
+			for (int i = 0; i< filesCount; i++) {
+				long fileLength = dataInputStream.readLong();
+				String fileName = dataInputStream.readUTF();
+				byte[] bytes = new byte[(int)fileLength];
+				dataInputStream.readFully(bytes);
+				BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(bytes));
+
+
+				ImageModel imageModel =  new ImageModel("the Image", bufferedImage);
+				Double marios = imageModel.calculatePorosityProcess();
+				System.out.println("the porositu is"+ marios.toString());
+
+
+				files[i] = new File(DIR_PATH + "/" + fileName);
+				fileOutputStream = new FileOutputStream(files[i]);
+				BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+				bufferedOutputStream.write(bytes, 0, (int)fileLength);
+				bufferedOutputStream.close();
 			}
 
-			fileOutputStream.close();
 			inputStream.close();
 
 			FacesMessage msg =
@@ -75,6 +90,7 @@ public class IndexController {
 							event.getFile().getSize() / 1024 + " Kb content type: " +
 							event.getFile().getContentType() + "The file was uploaded.");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
+
 
 		} catch (IOException e) {
 			e.printStackTrace();
