@@ -16,29 +16,53 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
 
-/**
- * Created by cerebro on 8/17/14.
- */
 public class ProcessHelper {
 	ImagePlus imagePlus;
 	ImageConverter imageConverter;
 	ImageProcessor imageProcessor;
 
-	public ProcessHelper(String filePath){
+	public ProcessHelper(String filePath) {
 		this.imagePlus = IJ.openImage(filePath);
 		this.imageConverter = new ImageConverter(this.imagePlus);
 		this.imageProcessor = this.imagePlus.getProcessor();
 		imageConverter.convertToGray8();
 	}
 
-	public HashMap<String, Double> getPorosity() throws NullPointerException{
+	public ProcessHelper(ImagePlus imagePlus) {
+		this.imagePlus = imagePlus;
+		this.imageConverter = new ImageConverter(this.imagePlus);
+		this.imageProcessor = this.imagePlus.getProcessor();
+		imageConverter.convertToGray8();
+	}
+
+	public static void cropAndResize(ImagePlus imp, int targetWidth, int targetHeight) throws Exception {
+		ImageProcessor ip = imp.getProcessor();
+		System.out.println("size1: " + ip.getWidth() + "x" + ip.getHeight());
+		ip.setInterpolationMethod(ImageProcessor.BILINEAR);
+		ip = ip.resize(targetWidth * 2, targetHeight * 2);
+		System.out.println("size2: " + ip.getWidth() + "x" + ip.getHeight());
+
+		int cropX = ip.getWidth() / 2;
+		int cropY = ip.getHeight() / 2;
+		ip.setRoi(cropX, cropY, targetWidth, targetHeight);
+		ip = ip.crop();
+		System.out.println("size3: " + ip.getWidth() + "x" + ip.getHeight());
+		BufferedImage croppedImage = ip.getBufferedImage();
+
+		System.out.println("size4: " + ip.getWidth() + "x" + ip.getHeight());
+		new ImagePlus("croppedImage", croppedImage).show();
+
+		ImageIO.write(croppedImage, "jpg", new File("cropped.jpg"));
+	}
+
+	public HashMap<String, Double> getPorosity() throws NullPointerException {
 		Double porosity;
 		Double area;
 		Double max;
 		Double min;
 		HashMap<String, Double> resultsMap = new HashMap<>();
 
-		try{
+		try {
 			this.imagePlus.getProcessor().setAutoThreshold("Default");
 			int measurements =
 					Measurements.AREA +
@@ -64,15 +88,15 @@ public class ProcessHelper {
 			resultsMap.put("max", max);
 
 			rt.reset();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resultsMap;
 	}
 
-	public void countParcicles(String thesholdType) {
+	public void countParticles(String thresholdType) {
 		try {
-			this.imagePlus.getProcessor().setAutoThreshold(thesholdType);
+			this.imagePlus.getProcessor().setAutoThreshold(thresholdType);
 			this.imagePlus.show();
 //			this.imagePlus.setRoi(0, 0, width, height - 500);
 			int measurments = Measurements.AREA +
@@ -87,26 +111,6 @@ public class ProcessHelper {
 			System.out.println("Exception on countParticles");
 			e.printStackTrace();
 		}
-	}
-
-	public static void cropAndResize(ImagePlus imp, int targetWidth, int targetHeight) throws Exception{
-		ImageProcessor ip = imp.getProcessor();
-		System.out.println("size1: "+ip.getWidth()+"x"+ip.getHeight());
-		ip.setInterpolationMethod(ImageProcessor.BILINEAR);
-		ip = ip.resize(targetWidth * 2, targetHeight * 2);
-		System.out.println("size2: "+ip.getWidth()+"x"+ip.getHeight());
-
-		int cropX = ip.getWidth() / 2;
-		int cropY = ip.getHeight() / 2;
-		ip.setRoi(cropX, cropY, targetWidth, targetHeight);
-		ip = ip.crop();
-		System.out.println("size3: "+ip.getWidth()+"x"+ip.getHeight());
-		BufferedImage croppedImage = ip.getBufferedImage();
-
-		System.out.println("size4: "+ip.getWidth()+"x"+ip.getHeight());
-		new ImagePlus("croppedImage", croppedImage).show();
-
-		ImageIO.write(croppedImage, "jpg", new File("cropped.jpg"));
 	}
 
 	public void calibrateImage(double pX, double pY, String unit, ImagePlus imp) {

@@ -6,16 +6,19 @@ import image.helpers.ValidationHelper;
 import ij.IJ;
 import ij.ImagePlus;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class ImageModel extends ImagePlus {
 
 	public String filePath;
+	public ImagePlus imp;
+	public Double porosity = -1.0;
 	private int height = -1;
 	private int width = -1;
-	private ImagePlus imp;
-	public Double porosity = -1.0;
 
 
 	public ImageModel(String thePath) {
@@ -34,16 +37,16 @@ public class ImageModel extends ImagePlus {
 		}
 	}
 
-	public Double calculatePorosityProcess() {
-		ProcessHelper processHelper = new ProcessHelper(this.filePath);
+	public Double calculatePorosityProcess() throws IOException {
+		ProcessHelper processHelper = new ProcessHelper("/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/filesblack.png");
 		this.porosity = processHelper.getPorosity().get("porosity");
 		return this.porosity;
 	}
 
 	public void countParticlesProcess(String thresholdType) {
 		ProcessHelper processHelper = new ProcessHelper(this.filePath);
-		if (ValidationHelper.isThresholdTypeValid(thresholdType)){
-			processHelper.countParcicles(thresholdType);
+		if (ValidationHelper.isThresholdTypeValid(thresholdType)) {
+			processHelper.countParticles(thresholdType);
 		}
 	}
 
