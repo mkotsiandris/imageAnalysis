@@ -1,10 +1,13 @@
 package web;
 
+
 import image.helpers.FileMinion;
 import image.models.ImageModel;
+import image.models.Measurement;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -17,6 +20,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @ManagedBean(name = "indexController")
 @ViewScoped
@@ -30,9 +34,19 @@ public class IndexController {
 	private FormModel formModel;
 	private UploadedFile uploadedFile;
 	private FileMinion fileMinion;
+	private String thresholdType;
+	private List<String> measurements;
+	private String[] selectedMeasurements;
 
 	public IndexController() {
 		this.formModel = new FormModel();
+	}
+
+
+	@PostConstruct
+	public void init(){
+		Measurement measurementModel = new Measurement();
+		this.measurements = measurementModel.getMeasurementList();
 	}
 
 	public int submitForm() {
@@ -103,4 +117,29 @@ public class IndexController {
 	public void setFormModel(FormModel formModel) {
 		this.formModel = formModel;
 	}
+
+	public String getThresholdType() {
+		return thresholdType;
+	}
+
+	public void setThresholdType(String thresholdType) {
+		this.thresholdType = thresholdType;
+	}
+
+	public String[] getSelectedMeasurements() {
+		return selectedMeasurements;
+	}
+
+	public void setSelectedMeasurements(String[] selectedMeasurements) {
+		this.selectedMeasurements = selectedMeasurements;
+	}
+
+	public List<String> getMeasurements() {
+		return measurements;
+	}
+
+	public void setMeasurements(List<String> measurements) {
+		this.measurements = measurements;
+	}
+
 }

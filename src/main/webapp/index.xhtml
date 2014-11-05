@@ -2,9 +2,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+        >
 <h:head>
-	<title>Prime Faces</title>
+	<title>Image analysis page</title>
 	<style type="text/css">
 		.ui-fileupload {
 			width: 800px;
@@ -16,63 +18,32 @@
 	<h:outputText value="PrimeFaces Single Upload"
 	              style="font:30px bold; margin-left:15%;"/>
 	<h:form enctype="multipart/form-data">
-		<p:fileUpload fileUploadListener="#{indexController.handleFileUpload}"
-		              mode="advanced"
-		              update="messages"
-		              label="Choose a file"
-		              sizeLimit="1048576"
-		              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-		              invalidSizeMessage="The maximum file size allowed is 1 Megabyte !"
-		              invalidFileMessage="You are allowed to upload only images !"
-				/>
-		<p:growl id="messages" showDetail="true" sticky="true"/>
+        <p:outputLabel for="thresholdType" value="Select the threshold type:" />
+        <p:selectOneMenu id="thresholdType" value="#{indexController.thresholdType}">
+            <f:selectItem itemLabel="Default" itemValue="Default" />
+            <f:selectItem itemLabel="Huang" itemValue="Huang" />
+            <f:selectItem itemLabel="PS4" itemValue="PS4" />
+            <f:selectItem itemLabel="Wii U" itemValue="Wii U" />
+        </p:selectOneMenu>
+
+        <h:outputText value="Grid:" />
+        <p:selectManyCheckbox id="grid" value="#{indexController.selectedMeasurements}" layout="grid" columns="3">
+            <f:selectItems value="#{indexController.measurements}" var="measurement" itemLabel="#{measurement}" itemValue="#{measurement}" />
+        </p:selectManyCheckbox>
+        <h:outputText value="PrimeFaces Drag and Drop Upload"
+                      style="font:30px bold; margin-left:15%;"/>
+        <p:fileUpload fileUploadListener="#{indexController.handleFileUpload}"
+                      mode="advanced"
+                      update="messages"
+                      multiple="true"
+                      label="Choose a file or drag and drop it here"
+                      sizeLimit="10485760"
+                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                      invalidSizeMessage="The maximum file size allowed is 10 Megabytes !"
+                      invalidFileMessage="You are allowed to upload only images !"
+                />
+        <p:growl id="messages" showDetail="true" life="5000"/>
 	</h:form>
 
-	<h:outputText value="PrimeFaces Multiple Upload"
-	              style="font:30px bold; margin-left:15%;"/>
-	<h:form enctype="multipart/form-data">
-		<p:fileUpload fileUploadListener="#{indexController.handleFileUpload}"
-		              mode="advanced"
-		              update="messages"
-		              label="Choose a file"
-		              sizeLimit="10485760"
-		              multiple="true"
-		              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-		              invalidSizeMessage="The maximum file size allowed is 10 Megabytes !"
-		              invalidFileMessage="You are allowed to upload only images !"
-				/>
-		<p:growl id="messages" showDetail="true" life="5000"/>
-	</h:form>
-
-	<h:outputText value="PrimeFaces Auto Upload"
-	              style="font:30px bold; margin-left:15%;"/>
-	<h:form enctype="multipart/form-data">
-		<p:fileUpload fileUploadListener="#{indexController.handleFileUpload}"
-		              mode="advanced"
-		              update="messages"
-		              label="Choose a file"
-		              auto="true"
-		              sizeLimit="10485760"
-		              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-		              invalidSizeMessage="The maximum file size allowed is 10 Megabytes !"
-		              invalidFileMessage="You are allowed to upload only images !"
-				/>
-		<p:growl id="messages" showDetail="true" life="5000"/>
-	</h:form>
-
-	<h:outputText value="PrimeFaces Drag and Drop Upload"
-	              style="font:30px bold; margin-left:15%;"/>
-	<h:form enctype="multipart/form-data">
-		<p:fileUpload fileUploadListener="#{indexController.handleFileUpload}"
-		              mode="advanced"
-		              update="messages"
-		              label="Choose a file or drag and drop it here"
-		              sizeLimit="10485760"
-		              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-		              invalidSizeMessage="The maximum file size allowed is 10 Megabytes !"
-		              invalidFileMessage="You are allowed to upload only images !"
-				/>
-		<p:growl id="messages" showDetail="true" life="5000"/>
-	</h:form>
 </h:body>
 </html>
