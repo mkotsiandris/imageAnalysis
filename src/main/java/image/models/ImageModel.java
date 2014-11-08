@@ -43,12 +43,12 @@ public class ImageModel extends ImagePlus {
 		return this.porosity;
 	}
 
-	public void countParticlesProcess(String thresholdType) {
-		ProcessHelper processHelper = new ProcessHelper(this.filePath);
-		if (ValidationHelper.isThresholdTypeValid(thresholdType)) {
-			processHelper.countParticles(thresholdType);
-		}
-	}
+//	public void countParticlesProcess(String thresholdType) {
+//		ProcessHelper processHelper = new ProcessHelper(this.filePath);
+//		if (ValidationHelper.isThresholdTypeValid(thresholdType)) {
+//			processHelper.countParticles(thresholdType);
+//		}
+//	}
 
 	public void displayImageMetaData() {
 		ImageModelHelper.readImageAndDisplayMetaData(this.filePath);

@@ -6,6 +6,7 @@ import ij.measure.Measurements;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Measurement {
 
@@ -42,6 +43,17 @@ public class Measurement {
 		this.measurementMap.put(CIRCULARITY, Measurements.CIRCULARITY);
 		this.measurementMap.put(STD_DEV, Measurements.STD_DEV);
 		this.measurementMap.put(CENTER_OF_MASS, Measurements.CENTER_OF_MASS);
+	}
+
+
+	public int convertMeasurementListToInt(String[] selectedMeasurements){
+		int result = 0;
+		for (int i = 0; i < selectedMeasurements.length; i++)
+		{
+			Integer value = measurementMap.get(selectedMeasurements[i]);
+			result += value.intValue();
+		}
+		return result;
 	}
 
 	public List<String> getMeasurementList() {

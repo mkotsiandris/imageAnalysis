@@ -10,16 +10,20 @@ import ij.plugin.filter.Analyzer;
 import ij.plugin.filter.ParticleAnalyzer;
 import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
+import image.models.Measurement;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class ProcessHelper {
 	ImagePlus imagePlus;
 	ImageConverter imageConverter;
 	ImageProcessor imageProcessor;
+	private int measurements;
 
 	public ProcessHelper(String filePath) {
 		this.imagePlus = IJ.openImage(filePath);
@@ -64,18 +68,8 @@ public class ProcessHelper {
 
 		try {
 			this.imagePlus.getProcessor().setAutoThreshold("Default");
-			int measurements =
-					Measurements.AREA +
-					Measurements.MEAN +
-					Measurements.MIN_MAX +
-					Measurements.STD_DEV +
-					Measurements.MODE +
-					Measurements.MEDIAN +
-					Measurements.AREA_FRACTION +
-					Measurements.LIMIT;
-
 			ResultsTable rt = new ResultsTable();
-			Analyzer analyzer = new Analyzer(this.imagePlus, measurements, rt);
+			Analyzer analyzer = new Analyzer(this.imagePlus, this.measurements, rt);
 			analyzer.measure();
 			porosity = rt.getValue("%Area", rt.getCounter() - 1);
 			area = rt.getValue("Area", rt.getCounter() - 1);
@@ -94,23 +88,23 @@ public class ProcessHelper {
 		return resultsMap;
 	}
 
-	public void countParticles(String thresholdType) {
+	public String countParticles(String thresholdType, int measurements) {
 		try {
+			ImagePlus imagePlus1 = new ImagePlus("");
 			this.imagePlus.getProcessor().setAutoThreshold(thresholdType);
-			this.imagePlus.show();
 //			this.imagePlus.setRoi(0, 0, width, height - 500);
-			int measurments = Measurements.AREA +
-					Measurements.FERET +
-					Measurements.PERIMETER +
-					Measurements.CIRCULARITY;
+			int measurementsexp = Measurements.AREA_FRACTION+Measurements.AREA;
 			ResultsTable rt = new ResultsTable();
-			ParticleAnalyzer particleAnalyzer = new ParticleAnalyzer(ParticleAnalyzer.SHOW_OUTLINES, measurments, rt, 10, 99999);
+			ParticleAnalyzer particleAnalyzer = new ParticleAnalyzer(ParticleAnalyzer.SHOW_OUTLINES, measurementsexp, rt, 10, 99999);
 			particleAnalyzer.analyze(this.imagePlus);
-			rt.show("My analyzer");
+//			rt.show("the results table");
+			//TODO - return resultsTable
+			String marios = rt.getRowAsString(0);
 		} catch (Exception e) {
 			System.out.println("Exception on countParticles");
 			e.printStackTrace();
 		}
+		return "marios";
 	}
 
 	public void calibrateImage(double pX, double pY, String unit, ImagePlus imp) {
@@ -124,5 +118,10 @@ public class ProcessHelper {
 		cal.yOrigin = originY / pY;
 	}
 
+	public String resultsTableToStringArray(ResultsTable rt) {
+
+		String marios = rt.getRowAsString(0);
+		return "";
+	}
 }
 

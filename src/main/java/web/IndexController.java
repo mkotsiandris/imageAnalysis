@@ -1,11 +1,11 @@
 package web;
 
 
+import ij.ImagePlus;
+import image.ApplicationMain;
 import image.helpers.FileMinion;
-import image.models.ImageModel;
 import image.models.Measurement;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -24,19 +24,20 @@ import java.util.List;
 
 @ManagedBean(name = "indexController")
 @ViewScoped
+
 public class IndexController {
 
 	private final String FORM_SUBMITTED = "The form submitted successfully!";
-	private final String ERROR_OCURED = "An error ocurred during submission!";
-	private static final int BUFFER_SIZE = 6124;
+	private final int BUFFER_SIZE = 6124;
 	private final String DIR_PATH = "/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
 
 	private FormModel formModel;
-	private UploadedFile uploadedFile;
 	private FileMinion fileMinion;
 	private String thresholdType;
 	private List<String> measurements;
 	private String[] selectedMeasurements;
+	private BufferedImage bufferedImage;
+	private String uploadedFilePath;
 
 	public IndexController() {
 		this.formModel = new FormModel();
@@ -51,27 +52,30 @@ public class IndexController {
 
 	public int submitForm() {
 		String msg = FORM_SUBMITTED;
+		ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
+		ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, this.uploadedFilePath);
+		ApplicationMain applicationMain1 = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus);
+		applicationMain1.countParticles();
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
 		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		return 1;
 	}
 
 	public void handleFileUpload(FileUploadEvent event) {
-		ExternalContext extContext =
-				FacesContext.getCurrentInstance().getExternalContext();
+		ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();
 		this.fileMinion = new FileMinion();
+		String sessionID = this.getSessionID();
+		this.uploadedFilePath = DIR_PATH + sessionID+ "/" + event.getFile().getFileName();
 		try {
-			this.fileMinion.createUserDir(this.getSessionID(), DIR_PATH);
-			File result = new File(("/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/" + this.getSessionID()+ "/" + event.getFile().getFileName()));
+			this.fileMinion.createUserDir(sessionID, DIR_PATH);
+			File result = new File(this.uploadedFilePath);
 			FileOutputStream fileOutputStream = new FileOutputStream(result);
 
 			byte[] buffer = new byte[BUFFER_SIZE];
 
 			int bulk;
 			InputStream inputStream = event.getFile().getInputstream();
-			BufferedImage bufferedImage = ImageIO.read(inputStream);
-			ImageModel imageModel = new ImageModel("theTitle", bufferedImage);
-			Double marios = imageModel.calculatePorosityProcess();
+			bufferedImage = ImageIO.read(inputStream);
 			while (true) {
 				bulk = inputStream.read(buffer);
 				if (bulk < 0) {
@@ -94,13 +98,10 @@ public class IndexController {
 		} catch (IOException e) {
 			e.printStackTrace();
 
-			FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"The files were not uploaded!", "");
+			FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_ERROR, "The files were not uploaded!", "");
 			FacesContext.getCurrentInstance().addMessage(null, error);
 		}
 	}
-
-
 
 	private String getSessionID(){
 		FacesContext fCtx = FacesContext.getCurrentInstance();
