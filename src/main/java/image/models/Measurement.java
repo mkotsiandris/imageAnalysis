@@ -47,7 +47,4 @@ public class Measurement {
 	public List<String> getMeasurementList() {
 		return measurementList;
 	}
-
-
-
 }

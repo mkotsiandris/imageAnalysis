@@ -66,13 +66,13 @@ public class ProcessHelper {
 			this.imagePlus.getProcessor().setAutoThreshold("Default");
 			int measurements =
 					Measurements.AREA +
-							Measurements.MEAN +
-							Measurements.MIN_MAX +
-							Measurements.STD_DEV +
-							Measurements.MODE +
-							Measurements.MEDIAN +
-							Measurements.AREA_FRACTION +
-							Measurements.LIMIT;
+					Measurements.MEAN +
+					Measurements.MIN_MAX +
+					Measurements.STD_DEV +
+					Measurements.MODE +
+					Measurements.MEDIAN +
+					Measurements.AREA_FRACTION +
+					Measurements.LIMIT;
 
 			ResultsTable rt = new ResultsTable();
 			Analyzer analyzer = new Analyzer(this.imagePlus, measurements, rt);
