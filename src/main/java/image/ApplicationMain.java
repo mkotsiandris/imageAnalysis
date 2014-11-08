@@ -26,13 +26,20 @@ public class ApplicationMain {
 	public ApplicationMain(String[] selectedMeasurements, String selectedThreshold, ImagePlus imagePlus){
 		this.selectedMeasurements = selectedMeasurements;
 		this.selectedThreshold = selectedThreshold;
+		this.measurement = new Measurement();
 		this.imagePlus = imagePlus;
+	}
+
+	public void analyseImage(){
+		ProcessHelper processHelper = new ProcessHelper(this.imagePlus);
+		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
+		HashMap<String, Double> analysisMap = processHelper.getPorosity(measurements);
 	}
 
 	public void countParticles() {
 		ProcessHelper processHelper = new ProcessHelper(this.imagePlus);
-//		HashMap<String, Double> mapper = processHelper.getPorosity();
-		String marios = processHelper.countParticles(this.selectedThreshold, 4);
+		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
+		String marios = processHelper.countParticles(this.selectedThreshold, measurements);
 	}
 
 	public String[] getSelectedMeasurements() {

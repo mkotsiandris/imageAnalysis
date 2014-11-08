@@ -59,7 +59,7 @@ public class ProcessHelper {
 		ImageIO.write(croppedImage, "jpg", new File("cropped.jpg"));
 	}
 
-	public HashMap<String, Double> getPorosity() throws NullPointerException {
+	public HashMap<String, Double> getPorosity(int measurements) throws NullPointerException {
 		Double porosity;
 		Double area;
 		Double max;
@@ -69,7 +69,7 @@ public class ProcessHelper {
 		try {
 			this.imagePlus.getProcessor().setAutoThreshold("Default");
 			ResultsTable rt = new ResultsTable();
-			Analyzer analyzer = new Analyzer(this.imagePlus, this.measurements, rt);
+			Analyzer analyzer = new Analyzer(this.imagePlus, measurements, rt);
 			analyzer.measure();
 			porosity = rt.getValue("%Area", rt.getCounter() - 1);
 			area = rt.getValue("Area", rt.getCounter() - 1);
@@ -90,9 +90,7 @@ public class ProcessHelper {
 
 	public String countParticles(String thresholdType, int measurements) {
 		try {
-			ImagePlus imagePlus1 = new ImagePlus("");
 			this.imagePlus.getProcessor().setAutoThreshold(thresholdType);
-//			this.imagePlus.setRoi(0, 0, width, height - 500);
 			int measurementsexp = Measurements.AREA_FRACTION+Measurements.AREA;
 			ResultsTable rt = new ResultsTable();
 			ParticleAnalyzer particleAnalyzer = new ParticleAnalyzer(ParticleAnalyzer.SHOW_OUTLINES, measurementsexp, rt, 10, 99999);

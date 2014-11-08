@@ -37,11 +37,11 @@ public class ImageModel extends ImagePlus {
 		}
 	}
 
-	public Double calculatePorosityProcess() throws IOException {
-		ProcessHelper processHelper = new ProcessHelper("/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/filesblack.png");
-		this.porosity = processHelper.getPorosity().get("porosity");
-		return this.porosity;
-	}
+//	public Double calculatePorosityProcess() throws IOException {
+//		ProcessHelper processHelper = new ProcessHelper("/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/filesblack.png");
+//		this.porosity = processHelper.getPorosity().get("porosity");
+//		return this.porosity;
+//	}
 
 //	public void countParticlesProcess(String thresholdType) {
 //		ProcessHelper processHelper = new ProcessHelper(this.filePath);

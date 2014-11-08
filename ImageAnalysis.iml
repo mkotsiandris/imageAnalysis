@@ -32,6 +32,7 @@
     <orderEntry type="library" name="Maven: gov.nih.imagej:imagej:1.47" level="project" />
     <orderEntry type="library" name="Maven: org.primefaces:primefaces:5.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-web-api:7.0" level="project" />
+    <orderEntry type="library" name="headless" level="project" />
   </component>
 </module>
 
