@@ -1,6 +1,5 @@
 package image;
 
-import ij.IJ;
 import ij.ImagePlus;
 import image.helpers.ProcessHelper;
 import image.models.Measurement;

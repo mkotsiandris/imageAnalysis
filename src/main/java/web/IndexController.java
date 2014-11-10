@@ -51,12 +51,17 @@ public class IndexController {
 	}
 
 	public int submitForm() {
-		String msg = FORM_SUBMITTED;
-		ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
-		ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus);
-		applicationMain.countParticles();
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+		try{
+			String msg = FORM_SUBMITTED;
+			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
+			ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus);
+			applicationMain.countParticles();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+			return 1;
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 		return 1;
 	}
 

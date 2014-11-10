@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="headless">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/Downloads/headless.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
