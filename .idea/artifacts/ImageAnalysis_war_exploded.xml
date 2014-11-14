@@ -7,9 +7,12 @@
           <element id="module-output" name="ImageAnalysis" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: com.headless.ij:headlessIJ:1.0" />
+          <element id="library" level="project" name="Maven: gov.nih.imagej:imagej:1.47" />
           <element id="library" level="project" name="Maven: org.primefaces:primefaces:5.1" />
         </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="ImageAnalysis/web/Web" />
     </root>

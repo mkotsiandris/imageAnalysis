@@ -29,7 +29,8 @@ public class IndexController {
 
 	private final String FORM_SUBMITTED = "The form submitted successfully!";
 	private final int BUFFER_SIZE = 6124;
-	private final String DIR_PATH = "/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
+	private final String DIR_PATH2 = "/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
+	private final String DIR_PATH = "/home/beast/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
 
 	private FormModel formModel;
 	private FileMinion fileMinion;
@@ -50,19 +51,19 @@ public class IndexController {
 		this.measurements = measurementModel.getMeasurementList();
 	}
 
-	public int submitForm() {
+	public String submitForm() {
 		try{
 			String msg = FORM_SUBMITTED;
 			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
 			ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus);
-			applicationMain.countParticles();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+			String result = applicationMain.countParticles();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, result, result));
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-			return 1;
+			return null;
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		return 1;
+		return null;
 	}
 
 	public void handleFileUpload(FileUploadEvent event) {

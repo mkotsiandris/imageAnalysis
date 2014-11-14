@@ -98,11 +98,12 @@ public class ProcessHelper {
 //			rt.show("the results table");
 			//TODO - return resultsTable
 			String marios = rt.getRowAsString(0);
+			return marios;
 		} catch (Exception e) {
 			System.out.println("Exception on countParticles");
 			e.printStackTrace();
+			return "error";
 		}
-		return "marios";
 	}
 
 	public void calibrateImage(double pX, double pY, String unit, ImagePlus imp) {

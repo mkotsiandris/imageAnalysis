@@ -35,10 +35,11 @@ public class ApplicationMain {
 		HashMap<String, Double> analysisMap = processHelper.getPorosity(measurements);
 	}
 
-	public void countParticles() {
+	public String countParticles() {
 		ProcessHelper processHelper = new ProcessHelper(this.imagePlus);
 		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
-		String marios = processHelper.countParticles(this.selectedThreshold, measurements);
+		String result = processHelper.countParticles(this.selectedThreshold, measurements);
+		return result;
 	}
 
 	public String[] getSelectedMeasurements() {
