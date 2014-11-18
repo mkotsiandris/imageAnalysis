@@ -1,5 +1,7 @@
 package image.helpers;
 
+import ij.measure.ResultsTable;
+
 /**
  * Created by cerebro on 10/19/14.
  */

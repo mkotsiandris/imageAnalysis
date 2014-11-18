@@ -28,13 +28,13 @@ import java.util.List;
 public class IndexController {
 
 	private final String FORM_SUBMITTED = "The form submitted successfully!";
+	private final String DIR_PATH2 = "/home/beast/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
+	private final String DIR_PATH = "/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
 	private final int BUFFER_SIZE = 6124;
-	private final String DIR_PATH2 = "/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
-	private final String DIR_PATH = "/home/beast/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
 
 	private FormModel formModel;
-	private FileMinion fileMinion;
 	private String thresholdType;
+	private FileMinion fileMinion;
 	private List<String> measurements;
 	private String[] selectedMeasurements;
 	private BufferedImage bufferedImage;
@@ -44,35 +44,33 @@ public class IndexController {
 		this.formModel = new FormModel();
 	}
 
-
 	@PostConstruct
 	public void init(){
 		Measurement measurementModel = new Measurement();
 		this.measurements = measurementModel.getMeasurementList();
+		this.fileMinion = new FileMinion();
 	}
 
 	public String submitForm() {
 		try{
 			String msg = FORM_SUBMITTED;
 			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
-			ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus);
-			String result = applicationMain.countParticles();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, result, result));
+			ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus, uploadedFilePath);
+			applicationMain.analyseImage();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-			return null;
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		return null;
+		fileMinion.deleteDirectoryAndFiles(DIR_PATH+getSessionID());
+		return "detail?facesRedirect=true";
 	}
 
 	public void handleFileUpload(FileUploadEvent event) {
-		ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext();
-		this.fileMinion = new FileMinion();
 		String sessionID = this.getSessionID();
 		this.uploadedFilePath = DIR_PATH + sessionID+ "/" + event.getFile().getFileName();
 		try {
-			this.fileMinion.createUserDir(sessionID, DIR_PATH);
+			fileMinion.createUserDir(sessionID, DIR_PATH);
 			File result = new File(this.uploadedFilePath);
 			FileOutputStream fileOutputStream = new FileOutputStream(result);
 
@@ -115,7 +113,7 @@ public class IndexController {
 	}
 
 
-	//Getters and Setters
+	/* Getters and Setters */
 	public FormModel getFormModel() {
 		return formModel;
 	}

@@ -15,30 +15,24 @@ public class ApplicationMain {
 	private String filePath;
 	private ImagePlus imagePlus;
 
-	public ApplicationMain(String[] selectedMeasurements, String selectedThreshold, String filePath){
-		this.selectedMeasurements = selectedMeasurements;
-		this.selectedThreshold = selectedThreshold;
-		this.filePath = filePath;
-		this.measurement = new Measurement();
-	}
-
-	public ApplicationMain(String[] selectedMeasurements, String selectedThreshold, ImagePlus imagePlus){
+	public ApplicationMain(String[] selectedMeasurements, String selectedThreshold, ImagePlus imagePlus, String theUploadedFilePath){
 		this.selectedMeasurements = selectedMeasurements;
 		this.selectedThreshold = selectedThreshold;
 		this.measurement = new Measurement();
 		this.imagePlus = imagePlus;
+		this.filePath = theUploadedFilePath;
 	}
 
 	public void analyseImage(){
-		ProcessHelper processHelper = new ProcessHelper(this.imagePlus);
+		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
 		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
-		HashMap<String, Double> analysisMap = processHelper.getPorosity(measurements);
+		HashMap<String, String> analysisMap = processHelper.analyseImage(measurements, this.selectedThreshold);
 	}
 
-	public String countParticles() {
-		ProcessHelper processHelper = new ProcessHelper(this.imagePlus);
+	public HashMap<String, String> countParticles() {
+		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
 		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
-		String result = processHelper.countParticles(this.selectedThreshold, measurements);
+		HashMap<String, String> result = processHelper.countParticles(this.selectedThreshold, measurements);
 		return result;
 	}
 
