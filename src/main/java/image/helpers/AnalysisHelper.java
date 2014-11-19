@@ -4,27 +4,20 @@ public class AnalysisHelper {
 
 	final double PI = 3.14;
 
-	double circularity = 0.0;
-	double length = 0.0;
-	double width = 0.0;
-	double feretDiameter = 0.0;
-	double volume = 0.0;
+	private double circularity = 0.0;
+	private double length = 0.0;
+	private double width = 0.0;
+	private double feretDiameter = 0.0;
+	private double volume = 0.0;
 
-	public AnalysisHelper(double circularity, double length, double width, double feretDiameter)
-	{
-		this.circularity = circularity;
-		this.length = length;
-		this.width = width;
-		this.feretDiameter = feretDiameter;
-	}
-
-	public  double findApproximateVolume(double circularity)
+	public double findApproximateVolume(double circularity)
 	{
 		if (circularity > 0){
-			return this.getEqualSphericalVolume(this.feretDiameter, this.length, this.width);
+			volume = this.getEqualSphericalVolume(this.feretDiameter, this.length, this.width);
 		} else {
-			return this.getEqualCylinderVolume(this.feretDiameter, this.length, this.width);
+			volume = this.getEqualCylinderVolume(this.feretDiameter, this.length, this.width);
 		}
+		return volume;
 	}
 
 	private double getEqualCylinderVolume(double feretDiameter, double length, double width)

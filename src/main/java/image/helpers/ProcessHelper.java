@@ -1,28 +1,29 @@
 
 package image.helpers;
 
-import ij.IJ;
 import ij.ImagePlus;
 import ij.measure.Calibration;
-import ij.measure.Measurements;
 import ij.measure.ResultsTable;
 import ij.plugin.filter.Analyzer;
 import ij.plugin.filter.ParticleAnalyzer;
 import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
+import image.models.ImageResult;
+import org.apache.commons.beanutils.BeanUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ProcessHelper {
 	private ImagePlus imagePlus;
 	private ImageConverter imageConverter;
 	private ImageProcessor imageProcessor;
 	private String resultCsvPath;
-	private int measurements;
 
 	public ProcessHelper(ImagePlus imagePlus, String theFilePathName)
 	{
@@ -106,9 +107,20 @@ public class ProcessHelper {
 		cal.yOrigin = originY / pY;
 	}
 
-	public void makeExtraCalculations()
+	public void makeExtraCalculations(HashMap<String, String> result)
 	{
+		AnalysisHelper analysisHelper = new AnalysisHelper();
+		double volume = analysisHelper.findApproximateVolume(Double.parseDouble(result.get("circularity")));
+		analysisHelper.getSurfaceDiameter(Double.parseDouble(result.get("area")));
+		ImageResult imageResult = new ImageResult();
 
+	}
+
+	public ImageResult setData(ImageResult imr, HashMap<String, String> fields) throws IllegalAccessException, InvocationTargetException{
+		for(Map.Entry<String, String> entry : fields.entrySet()) {
+			BeanUtils.setProperty(imr, entry.getKey(), entry.getValue());
+		}
+		return imr;
 	}
 }
 
