@@ -1,10 +1,5 @@
 package image.helpers;
 
-import ij.measure.ResultsTable;
-
-/**
- * Created by cerebro on 10/19/14.
- */
 public class AnalysisHelper {
 
 	final double PI = 3.14;

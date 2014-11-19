@@ -39,6 +39,7 @@ public class IndexController {
 	private String[] selectedMeasurements;
 	private BufferedImage bufferedImage;
 	private String uploadedFilePath;
+	private String function;
 
 	public IndexController() {
 		this.formModel = new FormModel();
@@ -62,7 +63,7 @@ public class IndexController {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		fileMinion.deleteDirectoryAndFiles(DIR_PATH+getSessionID());
+		fileMinion.deleteDirectoryAndFiles(DIR_PATH + getSessionID());
 		return "detail?facesRedirect=true";
 	}
 
@@ -144,6 +145,14 @@ public class IndexController {
 
 	public void setMeasurements(List<String> measurements) {
 		this.measurements = measurements;
+	}
+
+	public String getFunction() {
+		return function;
+	}
+
+	public void setFunction(String function) {
+		this.function = function;
 	}
 
 }

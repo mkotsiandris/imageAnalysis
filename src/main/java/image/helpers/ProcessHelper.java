@@ -24,7 +24,8 @@ public class ProcessHelper {
 	private String resultCsvPath;
 	private int measurements;
 
-	public ProcessHelper(ImagePlus imagePlus, String theFilePathName) {
+	public ProcessHelper(ImagePlus imagePlus, String theFilePathName)
+	{
 		this.imagePlus = imagePlus;
 		this.resultCsvPath = theFilePathName+"_result.csv";
 		this.imageConverter = new ImageConverter(this.imagePlus);
@@ -33,7 +34,8 @@ public class ProcessHelper {
 	}
 
 
-	public HashMap<String, String> analyseImage(int measurements, String threshold) throws NullPointerException {
+	public HashMap<String, String> analyseImage(int measurements, String threshold) throws NullPointerException
+	{
 		HashMap<String, String> resultsMap = new HashMap<>();
 		try {
 			this.imagePlus.getProcessor().setAutoThreshold(threshold);
@@ -51,7 +53,8 @@ public class ProcessHelper {
 		return resultsMap;
 	}
 
-	public HashMap<String, String> countParticles(String thresholdType, int measurements) {
+	public HashMap<String, String> countParticles(String thresholdType, int measurements)
+	{
 		HashMap<String, String> resultsMap = new HashMap<>();
 		try {
 			this.imagePlus.getProcessor().setAutoThreshold(thresholdType);
@@ -70,7 +73,8 @@ public class ProcessHelper {
 		return resultsMap;
 	}
 
-	public static void cropAndResize(ImagePlus imp, int targetWidth, int targetHeight) throws Exception {
+	public static void cropAndResize(ImagePlus imp, int targetWidth, int targetHeight) throws Exception
+	{
 		ImageProcessor ip = imp.getProcessor();
 		System.out.println("size1: " + ip.getWidth() + "x" + ip.getHeight());
 		ip.setInterpolationMethod(ImageProcessor.BILINEAR);
@@ -90,7 +94,8 @@ public class ProcessHelper {
 		ImageIO.write(croppedImage, "jpg", new File("cropped.jpg"));
 	}
 
-	public void calibrateImage(double pX, double pY, String unit, ImagePlus imp) {
+	public void calibrateImage(double pX, double pY, String unit, ImagePlus imp)
+	{
 		double originX = 0.0;
 		double originY = 0.0;
 		Calibration cal = imp.getCalibration();
@@ -99,6 +104,11 @@ public class ProcessHelper {
 		cal.pixelHeight = pY;
 		cal.xOrigin = originX / pX;
 		cal.yOrigin = originY / pY;
+	}
+
+	public void makeExtraCalculations()
+	{
+
 	}
 }
 
