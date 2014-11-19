@@ -23,10 +23,11 @@ public class ApplicationMain {
 		this.filePath = theUploadedFilePath;
 	}
 
-	public void analyseImage(){
+	public HashMap<String, String> analyseImage(){
 		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
 		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
 		HashMap<String, String> analysisMap = processHelper.analyseImage(measurements, this.selectedThreshold);
+		return analysisMap;
 	}
 
 	public HashMap<String, String> countParticles() {
@@ -59,7 +60,5 @@ public class ApplicationMain {
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
-
-
 
 }

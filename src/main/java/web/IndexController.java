@@ -10,22 +10,21 @@ import org.primefaces.event.FileUploadEvent;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 
 @ManagedBean(name = "indexController")
 @ViewScoped
 
-public class IndexController {
+public class IndexController implements Serializable {
 
 	private final String FORM_SUBMITTED = "The form submitted successfully!";
 	private final String DIR_PATH2 = "/home/beast/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
@@ -41,6 +40,8 @@ public class IndexController {
 	private String uploadedFilePath;
 	private String function;
 
+	private HashMap<String, String> result;
+
 	public IndexController() {
 		this.formModel = new FormModel();
 	}
@@ -50,6 +51,7 @@ public class IndexController {
 		Measurement measurementModel = new Measurement();
 		this.measurements = measurementModel.getMeasurementList();
 		this.fileMinion = new FileMinion();
+		result = new HashMap<>();
 	}
 
 	public String submitForm() {
@@ -57,14 +59,14 @@ public class IndexController {
 			String msg = FORM_SUBMITTED;
 			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
 			ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus, uploadedFilePath);
-			applicationMain.analyseImage();
+			result = applicationMain.analyseImage();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		} catch(Exception e){
 			e.printStackTrace();
 		}
 		fileMinion.deleteDirectoryAndFiles(DIR_PATH + getSessionID());
-		return "detail?facesRedirect=true";
+		return "detail?faces-redirect=true";
 	}
 
 	public void handleFileUpload(FileUploadEvent event) {
@@ -155,4 +157,11 @@ public class IndexController {
 		this.function = function;
 	}
 
+	public HashMap<String, String> getResult() {
+		return result;
+	}
+
+	public void setResult(HashMap<String, String> result) {
+		this.result = result;
+	}
 }

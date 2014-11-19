@@ -2,11 +2,23 @@
 <!DOCTYPE html
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <title>Detail page</title>
+</h:head>
+<h:body>
+<h:form enctype="multipart/form-data">
+<p:dataTable value="#{resultController.result}" var="result">
+    <p:column headerText="key">
+        <h:outputText value="#{result.key}" />
+    </p:column>
+    <p:column headerText="value">
+        <h:outputText value="#{result.value}" />
+    </p:column>
+</p:dataTable>
+</h:form>
+</h:body>
 </html>

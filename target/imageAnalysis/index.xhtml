@@ -13,9 +13,6 @@
 	<br/>
 	<br/>
 	<br/>
-	<br/>
-	<br/>
-	<br/>
 	<h:outputText value="Image Analysis"
 								style="font:30px bold; margin-left:15%;"/>
 	<h:form enctype="multipart/form-data">
@@ -30,6 +27,10 @@
 				</p:selectOneMenu>
 				<br/>
 				<br/>
+		<p:selectOneMenu id="function" value="#{indexController.function}">
+			<f:selectItem itemLabel="imageAnalysis" itemValue="Default image Analysis" />
+			<f:selectItem itemLabel="particleAnalysis" itemValue="Particle count and analysis" />
+		</p:selectOneMenu>
 				<br/>
 				<br/>
 				<h:outputText value="Grid:" />
