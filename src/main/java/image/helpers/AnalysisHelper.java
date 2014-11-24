@@ -4,7 +4,6 @@ public class AnalysisHelper {
 
 	final double PI = 3.14;
 
-	private double circularity = 0.0;
 	private double length = 0.0;
 	private double width = 0.0;
 	private double feretDiameter = 0.0;
@@ -12,7 +11,7 @@ public class AnalysisHelper {
 
 	public double findApproximateVolume(double circularity)
 	{
-		if (circularity > 0){
+		if (circularity > 0.750){
 			volume = this.getEqualSphericalVolume(this.feretDiameter, this.length, this.width);
 		} else {
 			volume = this.getEqualCylinderVolume(this.feretDiameter, this.length, this.width);
@@ -22,14 +21,12 @@ public class AnalysisHelper {
 
 	private double getEqualCylinderVolume(double feretDiameter, double length, double width)
 	{
-		double radius = feretDiameter/2;
-		double volume = PI*radius*radius*length;
-		return volume;
+		return PI*feretDiameter*length/2;
 	}
 
 	private double getEqualSphericalVolume(double feretDiameter, double length, double width)
 	{
-		double radius = feretDiameter/2;
+		double radius = (feretDiameter/2);
 		double volume = PI*4*radius*radius*radius/3;
 		return volume;
 	}

@@ -4,21 +4,19 @@ package web;
 import ij.ImagePlus;
 import image.ApplicationMain;
 import image.helpers.FileMinion;
+import image.models.ImageResult;
 import image.models.Measurement;
 import org.primefaces.event.FileUploadEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.HashMap;
 import java.util.List;
 
 @ManagedBean(name = "indexController")
@@ -39,9 +37,7 @@ public class IndexController implements Serializable {
 	private BufferedImage bufferedImage;
 	private String uploadedFilePath;
 	private String function;
-
-	private HashMap<String, String> result;
-
+	private ImageResult imageResult;
 	public IndexController() {
 		this.formModel = new FormModel();
 	}
@@ -51,7 +47,7 @@ public class IndexController implements Serializable {
 		Measurement measurementModel = new Measurement();
 		this.measurements = measurementModel.getMeasurementList();
 		this.fileMinion = new FileMinion();
-		result = new HashMap<>();
+		this.imageResult = new ImageResult();
 	}
 
 	public String submitForm() {
@@ -59,7 +55,7 @@ public class IndexController implements Serializable {
 			String msg = FORM_SUBMITTED;
 			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
 			ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus, uploadedFilePath);
-			result = applicationMain.analyseImage();
+			imageResult.properties = applicationMain.analyseImage();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		} catch(Exception e){
@@ -157,11 +153,13 @@ public class IndexController implements Serializable {
 		this.function = function;
 	}
 
-	public HashMap<String, String> getResult() {
-		return result;
+	public ImageResult getImageResult() {
+		return imageResult;
 	}
 
-	public void setResult(HashMap<String, String> result) {
-		this.result = result;
+	public void setImageResult(ImageResult imageResult) {
+		this.imageResult = imageResult;
 	}
+
+
 }

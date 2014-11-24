@@ -47,6 +47,7 @@ public class ProcessHelper {
 			rt.saveAs(resultCsvPath);
 			ReaderCSV readerCSV = new ReaderCSV(resultCsvPath);
 			resultsMap = readerCSV.read();
+			makeExtraCalculations(resultsMap);
 			rt.reset();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -111,16 +112,9 @@ public class ProcessHelper {
 	{
 		AnalysisHelper analysisHelper = new AnalysisHelper();
 		double volume = analysisHelper.findApproximateVolume(Double.parseDouble(result.get("circularity")));
-		analysisHelper.getSurfaceDiameter(Double.parseDouble(result.get("area")));
-		ImageResult imageResult = new ImageResult();
-
-	}
-
-	public ImageResult setData(ImageResult imr, HashMap<String, String> fields) throws IllegalAccessException, InvocationTargetException{
-		for(Map.Entry<String, String> entry : fields.entrySet()) {
-			BeanUtils.setProperty(imr, entry.getKey(), entry.getValue());
-		}
-		return imr;
+		double surfaceDiameter = analysisHelper.getSurfaceDiameter(Double.parseDouble(result.get("area")));
+		result.put("volume", Double.toString(volume));
+		result.put("surfaceDiameter", Double.toString(surfaceDiameter));
 	}
 }
 
