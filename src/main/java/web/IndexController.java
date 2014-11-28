@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 
 @ManagedBean(name = "indexController")
@@ -38,6 +39,7 @@ public class IndexController implements Serializable {
 	private String uploadedFilePath;
 	private String function;
 	private ImageResult imageResult;
+	private HashMap<String, String> resultMap;
 	public IndexController() {
 		this.formModel = new FormModel();
 	}
@@ -47,7 +49,6 @@ public class IndexController implements Serializable {
 		Measurement measurementModel = new Measurement();
 		this.measurements = measurementModel.getMeasurementList();
 		this.fileMinion = new FileMinion();
-		this.imageResult = new ImageResult();
 	}
 
 	public String submitForm() {
@@ -55,7 +56,9 @@ public class IndexController implements Serializable {
 			String msg = FORM_SUBMITTED;
 			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
 			ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus, uploadedFilePath);
-			imageResult.properties = applicationMain.analyseImage();
+			this.resultMap = new HashMap<>();
+			this.resultMap = applicationMain.analyseImage();
+			this.imageResult = new ImageResult(this.resultMap);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		} catch(Exception e){

@@ -27,7 +27,7 @@ public class AnalysisHelper {
 	private double getEqualSphericalVolume(double feretDiameter, double length, double width)
 	{
 		double radius = (feretDiameter/2);
-		double volume = PI*4*radius*radius*radius/3;
+		double volume = Math.pow(radius, 3)*PI*4/3;
 		return volume;
 	}
 
@@ -44,5 +44,13 @@ public class AnalysisHelper {
 	public double getVolumeToSurface(double volume, double area)
 	{
 		return 6*volume / area;
+	}
+
+	public double getSphericity(double volume, double area) {
+		return Math.pow(PI, 1/3)*Math.pow(volume, 2/3)*6/area;
+	}
+
+	public double getCircularity (double volume, double area) {
+		return 4*PI*area/Math.sqrt(volume);
 	}
 }

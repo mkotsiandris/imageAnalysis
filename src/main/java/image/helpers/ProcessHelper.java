@@ -8,21 +8,14 @@ import ij.plugin.filter.Analyzer;
 import ij.plugin.filter.ParticleAnalyzer;
 import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
-import image.models.ImageResult;
-import org.apache.commons.beanutils.BeanUtils;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.Map;
 
 public class ProcessHelper {
 	private ImagePlus imagePlus;
 	private ImageConverter imageConverter;
-	private ImageProcessor imageProcessor;
 	private String resultCsvPath;
 
 	public ProcessHelper(ImagePlus imagePlus, String theFilePathName)
@@ -30,8 +23,7 @@ public class ProcessHelper {
 		this.imagePlus = imagePlus;
 		this.resultCsvPath = theFilePathName+"_result.csv";
 		this.imageConverter = new ImageConverter(this.imagePlus);
-		this.imageProcessor = this.imagePlus.getProcessor();
-		imageConverter.convertToGray8();
+		this.imageConverter.convertToGray8();
 	}
 
 

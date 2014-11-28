@@ -47,8 +47,7 @@ public class Measurement {
 
 	public int convertMeasurementListToInt(String[] selectedMeasurements){
 		int result = 0;
-		for (int i = 0; i < selectedMeasurements.length; i++)
-		{
+		for (int i = 0; i < selectedMeasurements.length; i++) {
 			Integer value = measurementMap.get(selectedMeasurements[i]);
 			result += value.intValue();
 		}

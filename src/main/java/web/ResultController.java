@@ -26,7 +26,6 @@ public class ResultController implements Serializable{
 	@PostConstruct
 	public void init() {
 		this.imageResult = indexController.getImageResult();
-		this.validColumnKeys.addAll(this.imageResult.properties.keySet());
 	}
 
 	private void createDynamicColumns() {
