@@ -2,6 +2,7 @@ package image.models;
 
 
 import ij.measure.Measurements;
+import sun.security.provider.SHA;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,10 @@ public class Measurement {
 	public final String CIRCULARITY = "Circularity";
 	public final String STD_DEV = "Standard Deviation";
 	public final String CENTER_OF_MASS = "Center of mass";
+	public final String SHAPE_DESCRIPTORS = "Shape Descriptors";
+	public final String FERET = "Feret";
+	public final String SKEWNESS = "Skeweness";
+	public final String KURTOSIS = "Kurtosis";
 
 	private List<String> measurementList;
 	public HashMap<String, Integer> measurementMap;
@@ -32,6 +37,10 @@ public class Measurement {
 		this.measurementList.add(CIRCULARITY);
 		this.measurementList.add(STD_DEV);
 		this.measurementList.add(CENTER_OF_MASS);
+		this.measurementList.add(FERET);
+		this.measurementList.add(SHAPE_DESCRIPTORS);
+		this.measurementList.add(KURTOSIS);
+		this.measurementList.add(SKEWNESS);
 	}
 
 	private void matchingMeasurementsWithName(){
@@ -42,6 +51,10 @@ public class Measurement {
 		this.measurementMap.put(CIRCULARITY, Measurements.CIRCULARITY);
 		this.measurementMap.put(STD_DEV, Measurements.STD_DEV);
 		this.measurementMap.put(CENTER_OF_MASS, Measurements.CENTER_OF_MASS);
+		this.measurementMap.put(FERET, Measurements.FERET);
+		this.measurementMap.put(SHAPE_DESCRIPTORS, Measurements.SHAPE_DESCRIPTORS);
+		this.measurementMap.put(SKEWNESS, Measurements.SKEWNESS);
+		this.measurementMap.put(KURTOSIS, Measurements.KURTOSIS);
 	}
 
 
