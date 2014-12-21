@@ -26,6 +26,8 @@ import java.util.List;
 public class IndexController implements Serializable {
 
 	private final String FORM_SUBMITTED = "The form submitted successfully!";
+	private final String IMAGEANALYSIS = "imageAnalysis";
+	private final String PARTICLEANALYSIS = "particleAnalysis";
 	private final String DIR_PATH2 = "/home/beast/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
 	private final String DIR_PATH = "/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
 	private final int BUFFER_SIZE = 6124;
@@ -57,7 +59,11 @@ public class IndexController implements Serializable {
 			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
 			ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus, uploadedFilePath);
 			this.resultMap = new HashMap<>();
-			this.resultMap = applicationMain.analyseImage();
+			if (this.function.equals(IMAGEANALYSIS)){
+				this.resultMap = applicationMain.analyseImage();
+			} else {
+				this.resultMap = applicationMain.countParticles();
+			}
 			this.imageResult = new ImageResult(this.resultMap);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
