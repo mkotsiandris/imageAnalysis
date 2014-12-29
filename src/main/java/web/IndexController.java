@@ -41,6 +41,7 @@ public class IndexController implements Serializable {
 	private String uploadedFilePath;
 	private String function;
 	private ImageResult imageResult;
+	private List<ImageResult> imageResults;
 	private HashMap<String, String> resultMap;
 	public IndexController() {
 		this.formModel = new FormModel();

@@ -5,16 +5,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import image.models.ImageResult;
 
 public class ReaderCSV {
 	private BufferedReader br;
 	private HashMap<String, String> map;
 	private String filePath;
+	public HashMap<Integer, ImageResult> resultHashMap;
+
 
 	public ReaderCSV(String theFile) {
 		filePath = theFile;
-
 	}
 
 	public HashMap<String, String> read() {
@@ -23,19 +26,22 @@ public class ReaderCSV {
 
 		try {
 			map = new HashMap<>();
+			resultHashMap = new HashMap<>();
 			br = new BufferedReader(new FileReader(filePath));
 			String[] rowHeaders = br.readLine().split(csvSplitBy);
+			int i = 0;
 			while ((line = br.readLine()) != null) {
 				String[] row = line.split(csvSplitBy);
 				map = matchHeadersWithData(rowHeaders, row);
+				ImageResult imr = new ImageResult(map);
+				resultHashMap.put(i, imr);
+				i += 1;
 			}
 
 			//loop map
 			for (Map.Entry<String, String> entry : map.entrySet()) {
-
 				System.out.println("Country [code= " + entry.getKey() + " , name="
 						+ entry.getValue() + "]");
-
 			}
 
 		} catch (IOException e) {
@@ -49,7 +55,6 @@ public class ReaderCSV {
 				}
 			}
 		}
-
 		return map;
 	}
 
