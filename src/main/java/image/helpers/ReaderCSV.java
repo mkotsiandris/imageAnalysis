@@ -20,7 +20,7 @@ public class ReaderCSV {
 		filePath = theFile;
 	}
 
-	public HashMap<String, String> read() {
+	public HashMap<Integer, ImageResult> read() {
 		String line;
 		String csvSplitBy = ",";
 
@@ -55,7 +55,7 @@ public class ReaderCSV {
 				}
 			}
 		}
-		return map;
+		return resultHashMap;
 	}
 
 	private HashMap<String, String> matchHeadersWithData(String[] headers, String[] data) {

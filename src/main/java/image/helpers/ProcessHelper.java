@@ -8,7 +8,10 @@ import ij.plugin.filter.Analyzer;
 import ij.plugin.filter.ParticleAnalyzer;
 import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
+import image.models.ImageResult;
+
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
@@ -27,9 +30,9 @@ public class ProcessHelper {
 	}
 
 
-	public HashMap<String, String> analyseImage(int measurements, String threshold) throws NullPointerException
+	public HashMap<Integer, ImageResult> analyseImage(int measurements, String threshold) throws NullPointerException
 	{
-		HashMap<String, String> resultsMap = new HashMap<>();
+		HashMap<Integer, ImageResult> resultsMap = new HashMap<>();
 		try {
 			this.imagePlus.getProcessor().setAutoThreshold(threshold);
 			ResultsTable rt = new ResultsTable();
@@ -39,7 +42,7 @@ public class ProcessHelper {
 			rt.saveAs(resultCsvPath);
 			ReaderCSV readerCSV = new ReaderCSV(resultCsvPath);
 			resultsMap = readerCSV.read();
-			makeExtraCalculations(resultsMap);
+			//makeExtraCalculations(resultsMap);
 			rt.reset();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -47,9 +50,9 @@ public class ProcessHelper {
 		return resultsMap;
 	}
 
-	public HashMap<String, String> countParticles(String thresholdType, int measurements)
+	public HashMap<Integer, ImageResult> countParticles(String thresholdType, int measurements)
 	{
-		HashMap<String, String> resultsMap = new HashMap<>();
+		HashMap<Integer, ImageResult> resultsMap = new HashMap<>();
 		try {
 			this.imagePlus.getProcessor().setAutoThreshold(thresholdType);
 			ResultsTable rt = new ResultsTable();

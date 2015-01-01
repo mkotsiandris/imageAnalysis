@@ -2,6 +2,7 @@ package image;
 
 import ij.ImagePlus;
 import image.helpers.ProcessHelper;
+import image.models.ImageResult;
 import image.models.Measurement;
 
 import java.util.HashMap;
@@ -23,18 +24,16 @@ public class ApplicationMain {
 		this.filePath = theUploadedFilePath;
 	}
 
-	public HashMap<String, String> analyseImage(){
+	public HashMap<Integer, ImageResult> analyseImage(){
 		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
 		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
-		HashMap<String, String> analysisMap = processHelper.analyseImage(measurements, this.selectedThreshold);
-		return analysisMap;
+		return processHelper.analyseImage(measurements, this.selectedThreshold);
 	}
 
-	public HashMap<String, String> countParticles() {
+	public HashMap<Integer, ImageResult> countParticles() {
 		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
 		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
-		HashMap<String, String> result = processHelper.countParticles(this.selectedThreshold, measurements);
-		return result;
+		return processHelper.countParticles(this.selectedThreshold, measurements);
 	}
 
 	public String[] getSelectedMeasurements() {

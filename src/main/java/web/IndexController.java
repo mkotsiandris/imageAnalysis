@@ -25,6 +25,7 @@ import java.util.List;
 
 public class IndexController implements Serializable {
 
+	//constants
 	private final String FORM_SUBMITTED = "The form submitted successfully!";
 	private final String IMAGEANALYSIS = "imageAnalysis";
 	private final String PARTICLEANALYSIS = "particleAnalysis";
@@ -32,6 +33,7 @@ public class IndexController implements Serializable {
 	private final String DIR_PATH = "/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
 	private final int BUFFER_SIZE = 6124;
 
+	//variables
 	private FormModel formModel;
 	private String thresholdType;
 	private FileMinion fileMinion;
@@ -41,8 +43,9 @@ public class IndexController implements Serializable {
 	private String uploadedFilePath;
 	private String function;
 	private ImageResult imageResult;
-	private List<ImageResult> imageResults;
-	private HashMap<String, String> resultMap;
+
+	//	private List<ImageResult> imageResults;
+	private HashMap<Integer, ImageResult> resultMap;
 	public IndexController() {
 		this.formModel = new FormModel();
 	}
@@ -65,7 +68,6 @@ public class IndexController implements Serializable {
 			} else {
 				this.resultMap = applicationMain.countParticles();
 			}
-			this.imageResult = new ImageResult(this.resultMap);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		} catch(Exception e){
@@ -171,5 +173,12 @@ public class IndexController implements Serializable {
 		this.imageResult = imageResult;
 	}
 
+	public HashMap<Integer, ImageResult> getResultMap() {
+		return resultMap;
+	}
+
+	public void setResultMap(HashMap<Integer, ImageResult> resultMap) {
+		this.resultMap = resultMap;
+	}
 
 }
