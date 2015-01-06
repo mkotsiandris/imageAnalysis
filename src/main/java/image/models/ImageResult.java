@@ -38,68 +38,67 @@ public class ImageResult {
 	public String x_centroid;
 	public String y_center_of_mass;
 	public String y_centroid;
-	public String volume;
-	public String sphericity;
-	public String surfaceDiameter;
-	public String volumeDiameter;
-	public String volumeToSurface;
+	public String volume = "";
+	public String sphericity = "";
+	public String surfaceDiameter = "";
+	public String volumeDiameter = "";
+	public String volumeToSurface = "";
 
 	public ImageResult(HashMap<String, String> map) {
-		this.angle = map.get("Angle");
-		this.area = map.get("Area");
-		this.std_dev = map.get("StdDev");
-		this.circularity = map.get("Circ.");
-		this.area_fraction = map.get("%Area");
-		this.solidity = map.get("Solidity");
-		this.x_center_of_mass = map.get("XM");
-		this.y_center_of_mass = map.get("YM");
-		this.min_grey_value = map.get("Min");
-		this.max_grey_value = map.get("Max");
-		this.bounding_rectangle_origin_x = map.get("BX");
-		this.bounding_rectangle_origin_y = map.get("BY");
-		this.bounding_rectangle_width = map.get("Width");
-		this.bounding_rectangle_height = map.get("Height");
-		this.aspect_ratio = map.get("AR");
-		this.circularity = map.get("Circ.");
-		this.roundness = map.get("Round");
-		this.solidity = map.get("Solidity");
-		this.integrated_density = map.get("IntDen");
-		this.raw_integrated_density = map.get("RawIntDen");
-		this.skewness = map.get("Skew");
-		this.kurtosis = map.get("Kurt");
-		this.feret = map.get("Feret");
-		this.feret_angle = map.get("FeretAngle");
-		this.feret_x = map.get("FeretX");
-		this.feret_y = map.get("FeretY");
-		this.min_feret = map.get("MinFeret");
-		this.x_centroid = map.get("X");
-		this.y_centroid = map.get("Y");
-		this.major = map.get("Major");
-		this.minor = map.get("Minor");
-		this.perimeter = map.get("Perim.");
-		this.mean_grey_value = map.get("Mean");
-		this.median = map.get("median");
+		this.angle = replaceNull(map.get("Angle"));
+		this.area = replaceNull(map.get("Area"));
+		this.std_dev = replaceNull(map.get("StdDev"));
+		this.circularity = replaceNull(map.get("Circ."));
+		this.area_fraction = replaceNull(map.get("%Area"));
+		this.solidity = replaceNull(map.get("Solidity"));
+		this.x_center_of_mass = replaceNull(map.get("XM"));
+		this.y_center_of_mass = replaceNull(map.get("YM"));
+		this.min_grey_value = replaceNull(map.get("Min"));
+		this.max_grey_value = replaceNull(map.get("Max"));
+		this.bounding_rectangle_origin_x = replaceNull(map.get("BX"));
+		this.bounding_rectangle_origin_y = replaceNull(map.get("BY"));
+		this.bounding_rectangle_width = replaceNull(map.get("Width"));
+		this.bounding_rectangle_height = replaceNull(map.get("Height"));
+		this.aspect_ratio = replaceNull(map.get("AR"));
+		this.circularity = replaceNull(map.get("Circ."));
+		this.roundness = replaceNull(map.get("Round"));
+		this.solidity = replaceNull(map.get("Solidity"));
+		this.integrated_density = replaceNull(map.get("IntDen"));
+		this.raw_integrated_density = replaceNull(map.get("RawIntDen"));
+		this.skewness = replaceNull(map.get("Skew"));
+		this.kurtosis = replaceNull(map.get("Kurt"));
+		this.feret = replaceNull(map.get("Feret"));
+		this.feret_angle = replaceNull(map.get("FeretAngle"));
+		this.feret_x = replaceNull(map.get("FeretX"));
+		this.feret_y = replaceNull(map.get("FeretY"));
+		this.min_feret = replaceNull(map.get("MinFeret"));
+		this.x_centroid = replaceNull(map.get("X"));
+		this.y_centroid = replaceNull(map.get("Y"));
+		this.major = replaceNull(map.get("Major"));
+		this.minor = replaceNull(map.get("Minor"));
+		this.perimeter = replaceNull(map.get("Perim."));
+		this.mean_grey_value = replaceNull(map.get("Mean"));
+		this.median = replaceNull(map.get("median"));
 		this.calculateExtraParameters();
 	}
 
 	public void calculateExtraParameters(){
 		AnalysisHelper analysisHelper = new AnalysisHelper();
-		double volume = analysisHelper.findApproximateVolume(Double.parseDouble(this.circularity));
-		double surfaceDiameter = analysisHelper.getSurfaceDiameter(Double.parseDouble(this.area));
-		double sphericity = analysisHelper.getSphericity(volume, Double.parseDouble(this.area));
-		double volumeDiameter = analysisHelper.getVolumeDiameter(volume);
-		double volumeToSurface = analysisHelper.getVolumeToSurface(volume, Double.parseDouble(this.area));
-		this.volume = Double.toString(volume);
-		this.surfaceDiameter =  Double.toString(surfaceDiameter);
-		this.sphericity = Double.toString(sphericity);
-		this.volumeDiameter = Double.toString(volumeDiameter);
-		this.volumeToSurface = Double.toString(volumeToSurface);
+		if (!this.volume.isEmpty() && !this.area.isEmpty()) {
+			double volume = analysisHelper.findApproximateVolume(Double.parseDouble(this.circularity));
+			double surfaceDiameter = analysisHelper.getSurfaceDiameter(Double.parseDouble(this.area));
+			double sphericity = analysisHelper.getSphericity(volume, Double.parseDouble(this.area));
+			double volumeDiameter = analysisHelper.getVolumeDiameter(volume);
+			double volumeToSurface = analysisHelper.getVolumeToSurface(volume, Double.parseDouble(this.area));
+			this.volume = Double.toString(volume);
+			this.surfaceDiameter =  Double.toString(surfaceDiameter);
+			this.sphericity = Double.toString(sphericity);
+			this.volumeDiameter = Double.toString(volumeDiameter);
+			this.volumeToSurface = Double.toString(volumeToSurface);
+		}
 	}
 
-	public String replaceNullWithEmptyString(String obj) {
-		if (obj == null) {
-			obj = "";
-		}
-		return obj;
+	public String replaceNull(String input) {
+		return input == null ? "" : input;
 	}
 }

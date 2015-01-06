@@ -29,12 +29,11 @@ public class IndexController implements Serializable {
 	private final String FORM_SUBMITTED = "The form submitted successfully!";
 	private final String IMAGEANALYSIS = "imageAnalysis";
 	private final String PARTICLEANALYSIS = "particleAnalysis";
-	private final String DIR_PATH2 = "/home/beast/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
-	private final String DIR_PATH = "/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
+	private final String DIR_PATH2 = "/src/main/webapp/WEB-INF/files/";
+	private final String DIR_PATH = "/src/main/webapp/WEB-INF/files/";
 	private final int BUFFER_SIZE = 6124;
 
 	//variables
-	private FormModel formModel;
 	private String thresholdType;
 	private FileMinion fileMinion;
 	private List<String> measurements;
@@ -46,9 +45,6 @@ public class IndexController implements Serializable {
 
 	//	private List<ImageResult> imageResults;
 	private HashMap<Integer, ImageResult> resultMap;
-	public IndexController() {
-		this.formModel = new FormModel();
-	}
 
 	@PostConstruct
 	public void init(){
@@ -121,16 +117,6 @@ public class IndexController implements Serializable {
 		FacesContext fCtx = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) fCtx.getExternalContext().getSession(false);
 		return session.getId();
-	}
-
-
-	/* Getters and Setters */
-	public FormModel getFormModel() {
-		return formModel;
-	}
-
-	public void setFormModel(FormModel formModel) {
-		this.formModel = formModel;
 	}
 
 	public String getThresholdType() {
