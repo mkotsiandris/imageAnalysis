@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 @ManagedBean(name = "indexController")
@@ -44,7 +44,7 @@ public class IndexController implements Serializable {
 	private ImageResult imageResult;
 
 	//	private List<ImageResult> imageResults;
-	private HashMap<Integer, ImageResult> resultMap;
+	private List<ImageResult> resultMap;
 
 	@PostConstruct
 	public void init(){
@@ -58,7 +58,7 @@ public class IndexController implements Serializable {
 			String msg = FORM_SUBMITTED;
 			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
 			ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus, uploadedFilePath);
-			this.resultMap = new HashMap<>();
+			this.resultMap = new ArrayList<>();
 			if (this.function.equals(IMAGEANALYSIS)){
 				this.resultMap = applicationMain.analyseImage();
 			} else {
@@ -159,11 +159,11 @@ public class IndexController implements Serializable {
 		this.imageResult = imageResult;
 	}
 
-	public HashMap<Integer, ImageResult> getResultMap() {
+	public List<ImageResult> getResultMap() {
 		return resultMap;
 	}
 
-	public void setResultMap(HashMap<Integer, ImageResult> resultMap) {
+	public void setResultMap(List<ImageResult> resultMap) {
 		this.resultMap = resultMap;
 	}
 

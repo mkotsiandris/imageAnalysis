@@ -6,6 +6,7 @@ import image.models.ImageResult;
 import image.models.Measurement;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 public class ApplicationMain {
@@ -24,13 +25,13 @@ public class ApplicationMain {
 		this.filePath = theUploadedFilePath;
 	}
 
-	public HashMap<Integer, ImageResult> analyseImage(){
+	public List<ImageResult> analyseImage(){
 		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
 		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
 		return processHelper.analyseImage(measurements, this.selectedThreshold);
 	}
 
-	public HashMap<Integer, ImageResult> countParticles() {
+	public List<ImageResult> countParticles() {
 		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
 		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
 		return processHelper.countParticles(this.selectedThreshold, measurements);
