@@ -14,7 +14,16 @@
 </h:head>
 <h:body>
 <h:form enctype="multipart/form-data">
-<p:dataTable var="imageResult" value="#{resultController.imageResults}">
+<p:dataTable id="imageResults" var="imageResult" value="#{resultController.imageResults}">
+    <f:facet name="header">
+        List of Properties
+
+        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+        <p:columnToggler datasource="imageResults" trigger="toggler" />
+    </f:facet>
+    <p:column headerText="Angle" >
+        <h:outputText value="#{imageResult.angle}"/>
+    </p:column>
 
     <p:column headerText="Area">
         <h:outputText value="#{imageResult.area}" />
