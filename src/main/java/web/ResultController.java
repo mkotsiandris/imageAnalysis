@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.*;
 
@@ -13,14 +14,10 @@ import java.util.*;
 @ViewScoped
 public class ResultController implements Serializable{
 
-	@ManagedProperty("#{indexController}")
-	private IndexController indexController;
-	private ImageResult imageResult;
 	private List<ImageResult> imageResults;
 
-	@PostConstruct
-	public void init() {
-		this.imageResult = indexController.getImageResult();
+	public void initialize(){
+		 this.imageResults = (List<ImageResult>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("result");
 	}
 
 	public List<ImageResult> getImageResults() {
@@ -30,16 +27,6 @@ public class ResultController implements Serializable{
 	public void setImageResults(List<ImageResult> imageResults) {
 		this.imageResults = imageResults;
 	}
-
-	public ImageResult getImageResult() {
-		return imageResult;
-	}
-
-	public void setImageResult(ImageResult imageResult) {
-		this.imageResult = imageResult;
-	}
-
-	public void setIndexController(IndexController indexController) {this.indexController = indexController;}
 
 }
 

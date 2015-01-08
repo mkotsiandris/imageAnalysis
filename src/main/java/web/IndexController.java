@@ -11,6 +11,7 @@ import org.primefaces.event.FileUploadEvent;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ManagedBean(name = "indexController")
-@ViewScoped
+@SessionScoped
 
 public class IndexController implements Serializable {
 
@@ -42,8 +43,6 @@ public class IndexController implements Serializable {
 	private String uploadedFilePath;
 	private String function;
 	private ImageResult imageResult;
-
-	//	private List<ImageResult> imageResults;
 	private List<ImageResult> resultMap;
 
 	@PostConstruct
@@ -70,6 +69,7 @@ public class IndexController implements Serializable {
 			e.printStackTrace();
 		}
 		fileMinion.deleteDirectoryAndFiles(DIR_PATH + getSessionID());
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("result", this.resultMap);
 		return "detail?faces-redirect=true";
 	}
 

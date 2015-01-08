@@ -6,16 +6,15 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
+<f:metadata>
+    <f:event type="preRenderView" listener="#{resultController.initialize}"/>
+</f:metadata>
 <h:head>
     <title>Detail page</title>
 </h:head>
 <h:body>
 <h:form enctype="multipart/form-data">
 <p:dataTable var="imageResult" value="#{resultController.imageResults}">
-
-    <p:column headerText="Angle">
-        <h:outputText value="#{imageResult.angle}" />
-    </p:column>
 
     <p:column headerText="Area">
         <h:outputText value="#{imageResult.area}" />
