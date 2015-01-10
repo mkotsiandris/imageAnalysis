@@ -21,6 +21,11 @@
         <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
         <p:columnToggler datasource="imageResults" trigger="toggler" />
     </f:facet>
+
+    <p:column headerText="id" >
+        <h:outputText value="#{imageResult.id}"/>
+    </p:column>
+
     <p:column headerText="Angle" >
         <h:outputText value="#{imageResult.angle}"/>
     </p:column>

@@ -5,6 +5,15 @@ import image.helpers.AnalysisHelper;
 import java.util.HashMap;
 
 public class ImageResult {
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	private String id;
 	private String angle;
 	private String area;
 	private String area_fraction;
@@ -44,6 +53,7 @@ public class ImageResult {
 	private String volumeToSurface = "";
 
 	public ImageResult(HashMap<String, String> map) {
+		this.id = map.get("id");
 		this.angle = replaceNull(map.get("Angle"));
 		this.area = replaceNull(map.get("Area"));
 		this.std_dev = replaceNull(map.get("StdDev"));
@@ -99,6 +109,10 @@ public class ImageResult {
 
 	public String replaceNull(String input) {
 		return input == null ? "" : input;
+	}
+
+	private String getID(HashMap<String, String> theMap) {
+		return theMap.get("");
 	}
 
 	// getters and setters
