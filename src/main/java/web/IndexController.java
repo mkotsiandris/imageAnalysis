@@ -31,7 +31,7 @@ public class IndexController implements Serializable {
 	private final String IMAGEANALYSIS = "imageAnalysis";
 	private final String PARTICLEANALYSIS = "particleAnalysis";
 	private final String DIR_PATH2 = "/src/main/webapp/WEB-INF/files/";
-	private final String DIR_PATH = "/home/beast/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/";
+	private final String DIR_PATH = "src/main/webapp/WEB-INF/files/";
 	private final int BUFFER_SIZE = 6124;
 
 	//variables

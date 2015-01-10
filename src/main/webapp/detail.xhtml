@@ -26,12 +26,12 @@
         <h:outputText value="#{imageResult.id}"/>
     </p:column>
 
-    <p:column headerText="Angle" >
-        <h:outputText value="#{imageResult.angle}"/>
-    </p:column>
-
     <p:column headerText="Area">
         <h:outputText value="#{imageResult.area}" />
+    </p:column>
+
+    <p:column headerText="Porosity">
+        <h:outputText value="#{imageResult.area_fraction}" />
     </p:column>
 
     <p:column headerText="STD_DEV">
@@ -40,6 +40,22 @@
 
     <p:column headerText="Circularity">
         <h:outputText value="#{imageResult.circularity}" />
+    </p:column>
+
+    <p:column headerText="Feret">
+        <h:outputText value="#{imageResult.feret}" />
+    </p:column>
+
+    <p:column headerText="Feret Angle">
+        <h:outputText value="#{imageResult.feret_angle}" />
+    </p:column>
+
+    <p:column headerText="Feret X">
+        <h:outputText value="#{imageResult.feret_x}" />
+    </p:column>
+
+    <p:column headerText="Feret Y">
+        <h:outputText value="#{imageResult.feret_y}" />
     </p:column>
 </p:dataTable>
 </h:form>

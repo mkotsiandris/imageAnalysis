@@ -33,14 +33,9 @@ public class Measurement {
 		this.measurementList = new ArrayList<String>();
 		this.measurementList.add(AREA);
 		this.measurementList.add(AREA_FRACTION);
-		this.measurementList.add(MIN_MAX);
 		this.measurementList.add(CIRCULARITY);
 		this.measurementList.add(STD_DEV);
-		this.measurementList.add(CENTER_OF_MASS);
 		this.measurementList.add(FERET);
-		this.measurementList.add(SHAPE_DESCRIPTORS);
-		this.measurementList.add(KURTOSIS);
-		this.measurementList.add(SKEWNESS);
 	}
 
 	private void matchingMeasurementsWithName(){

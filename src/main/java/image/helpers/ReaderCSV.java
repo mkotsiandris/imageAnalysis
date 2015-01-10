@@ -26,7 +26,7 @@ public class ReaderCSV {
 			imageResults = new ArrayList<>();
 			br = new BufferedReader(new FileReader(filePath));
 			String[] rowHeaders = br.readLine().split(csvSplitBy);
-			rowHeaders[0] = "ID";
+			rowHeaders[0] = "id";
 			while ((line = br.readLine()) != null) {
 				String[] row = line.split(csvSplitBy);
 				map = matchHeadersWithData(rowHeaders, row);
