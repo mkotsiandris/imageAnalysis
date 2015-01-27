@@ -5,6 +5,7 @@ import image.helpers.ProcessHelper;
 import image.models.ImageResult;
 import image.models.Measurement;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,8 +22,14 @@ public class ApplicationMain {
 		this.selectedMeasurements = selectedMeasurements;
 		this.selectedThreshold = selectedThreshold;
 		this.measurement = new Measurement();
+
 		this.imagePlus = imagePlus;
 		this.filePath = theUploadedFilePath;
+	}
+
+	public ApplicationMain(ImagePlus imagePlus, String uploadedFilePath){
+		this.imagePlus = imagePlus;
+		this.filePath = uploadedFilePath;
 	}
 
 	public List<ImageResult> analyseImage(){
@@ -35,6 +42,11 @@ public class ApplicationMain {
 		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
 		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
 		return processHelper.countParticles(this.selectedThreshold, measurements);
+	}
+
+	public BufferedImage applyThreshold(String selectedThreshold){
+		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
+		return processHelper.applyThreshold(selectedThreshold);
 	}
 
 	public String[] getSelectedMeasurements() {

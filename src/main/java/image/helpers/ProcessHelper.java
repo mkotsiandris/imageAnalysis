@@ -49,6 +49,11 @@ public class ProcessHelper {
 		return resultsMap;
 	}
 
+	public BufferedImage applyThreshold(String threshold){
+		this.imagePlus.getProcessor().setAutoThreshold(threshold);
+		return this.imagePlus.getProcessor().getBufferedImage();
+	}
+
 	public List<ImageResult> countParticles(String thresholdType, int measurements) {
 		List<ImageResult> resultsMap = new ArrayList<>();
 		try {
