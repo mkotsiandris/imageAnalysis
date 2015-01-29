@@ -16,7 +16,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.PhaseId;
+import javax.faces.event.ValueChangeEvent;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
@@ -44,12 +46,23 @@ public class IndexController implements Serializable {
 	private FileMinion fileMinion;
 	private List<String> measurements;
 	private String[] selectedMeasurements;
+
+	public String getSuccess() {
+		return success;
+	}
+
+	private String success;
+
+	public BufferedImage getBufferedImage() {
+		return bufferedImage;
+	}
+
 	private BufferedImage bufferedImage;
 	private String uploadedFilePath;
 	private String function;
 	private ImageResult imageResult;
 	private List<ImageResult> resultMap;
-	private StreamedContent imgPreview;
+	private DefaultStreamedContent imgPreview;
 
 	@PostConstruct
 	public void init(){
@@ -80,6 +93,7 @@ public class IndexController implements Serializable {
 	}
 
 	public void handleFileUpload(FileUploadEvent event) {
+		success = "something";
 		String sessionID = this.getSessionID();
 		this.uploadedFilePath = DIR_PATH + sessionID+ "/" + event.getFile().getFileName();
 		try {
@@ -110,6 +124,7 @@ public class IndexController implements Serializable {
 							event.getFile().getSize() / 1024 + " Kb content type: " +
 							event.getFile().getContentType() + "The file was uploaded.");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
+			success = "YEI";
 
 		} catch (IOException e) {
 			this.uploadedFilePath = null;
@@ -189,11 +204,46 @@ public class IndexController implements Serializable {
 		return uploadedFilePath;
 	}
 
-	public StreamedContent getImgPreview() {
-		ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
-		ApplicationMain applicationMain = new ApplicationMain(imagePlus, uploadedFilePath);
+	public DefaultStreamedContent getImgPreview() {
+//		try {
+//			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
+//			ApplicationMain applicationMain = new ApplicationMain(imagePlus, uploadedFilePath);
+//			BufferedImage temp = applicationMain.applyThreshold(this.thresholdType);
+//			ByteArrayOutputStream os = new ByteArrayOutputStream();
+//			ImageIO.write(temp, "jpg", os);
+//			InputStream is = new ByteArrayInputStream(os.toByteArray());
+//			return new DefaultStreamedContent(is, "image/jpeg");
+//		}catch (IOException e) {
+//			e.printStackTrace();
+//			return new DefaultStreamedContent();
+//		}
+//	}
+		if (bufferedImage != null ) {
+			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
+			ApplicationMain applicationMain = new ApplicationMain(imagePlus, uploadedFilePath);
+			BufferedImage temp = applicationMain.applyThreshold(this.thresholdType);
+			Graphics2D g = (Graphics2D)temp.getGraphics();
+			g.scale(0.5, 0.5);
+			g.drawImage(temp, 0, 0, null);
+			g.dispose();
+			ByteArrayOutputStream bas = new ByteArrayOutputStream();
+			try {
+				ImageIO.write(temp,"png", bas);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			byte[] data = bas.toByteArray();
+			InputStream is = new ByteArrayInputStream(data);
+			imgPreview = new DefaultStreamedContent(is);
+		} else {
+			imgPreview = this.getBlankImage();
+		}
 		return imgPreview;
+
 	}
 
+	public void updateThresholdType(ValueChangeEvent event) {
+		event.getNewValue().toString();
+	}
 
 }
