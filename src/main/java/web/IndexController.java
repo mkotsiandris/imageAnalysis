@@ -222,13 +222,15 @@ public class IndexController implements Serializable {
 			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
 			ApplicationMain applicationMain = new ApplicationMain(imagePlus, uploadedFilePath);
 			BufferedImage temp = applicationMain.applyThreshold(this.thresholdType);
-			Graphics2D g = (Graphics2D)temp.getGraphics();
-			g.scale(0.5, 0.5);
-			g.drawImage(temp, 0, 0, null);
+			int newWidth = new Double(temp.getWidth() * 0.5).intValue();
+			int newHeight = new Double(temp.getHeight() * 0.5).intValue();
+			BufferedImage newImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = newImage.createGraphics();
+			g.drawImage(temp, 0, 0, newWidth, newHeight, null);
 			g.dispose();
 			ByteArrayOutputStream bas = new ByteArrayOutputStream();
 			try {
-				ImageIO.write(temp,"png", bas);
+				ImageIO.write(newImage,"png", bas);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

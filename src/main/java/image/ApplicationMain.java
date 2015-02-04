@@ -45,8 +45,14 @@ public class ApplicationMain {
 	}
 
 	public BufferedImage applyThreshold(String selectedThreshold){
-		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
-		return processHelper.applyThreshold(selectedThreshold);
+		if (selectedThreshold != null){
+			ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
+			return processHelper.applyThreshold(selectedThreshold);
+		} else {
+			ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
+			return processHelper.applyThreshold("Default");
+		}
+
 	}
 
 	public String[] getSelectedMeasurements() {
