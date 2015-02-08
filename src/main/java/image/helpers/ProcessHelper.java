@@ -8,7 +8,8 @@ import ij.plugin.filter.Analyzer;
 import ij.plugin.filter.ParticleAnalyzer;
 import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
-import image.models.ImageResult;
+import image.models.ParticleResult;
+import image.models.Result;
 
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
@@ -28,9 +29,9 @@ public class ProcessHelper {
 		this.imageConverter.convertToGray8();
 	}
 
-
-	public List<ImageResult> analyseImage(int measurements, String threshold) throws NullPointerException {
-		List<ImageResult> resultsMap = new ArrayList<>();
+	public Result analyseImage(int measurements, String threshold) throws NullPointerException {
+		List<ParticleResult> resultsMap = new ArrayList<>();
+		Result theResult;
 		try {
 			this.imagePlus.getProcessor().setAutoThreshold(threshold);
 			ResultsTable rt = new ResultsTable();
@@ -41,28 +42,31 @@ public class ProcessHelper {
 			ReaderCSV readerCSV = new ReaderCSV(resultCsvPath);
 			resultsMap = readerCSV.read();
 			//makeExtraCalculations(resultsMap);
+			theResult = new Result(resultsMap,this.applyThreshold(threshold));
 			rt.reset();
 		} catch (Exception e) {
+			theResult = new Result();
 			e.printStackTrace();
 		}
-		return resultsMap;
+		return theResult;
 	}
 
 	public BufferedImage applyThreshold(String threshold) {
-		ImagePlus marios = new ImagePlus();
+		ImagePlus temp = new ImagePlus();
 		try {
 			this.imagePlus.getProcessor().setAutoThreshold(threshold);
-			marios = this.imagePlus;
+			temp = this.imagePlus;
 		} catch (Exception e) {
 			System.out.println("Exception on countParticles");
 			e.printStackTrace();
 		}
-		return marios.getBufferedImage();
+		return temp.getBufferedImage();
 
 	}
 
-	public List<ImageResult> countParticles(String thresholdType, int measurements) {
-		List<ImageResult> resultsMap = new ArrayList<>();
+	public Result countParticles(String thresholdType, int measurements) {
+		List<ParticleResult> resultsMap = new ArrayList<>();
+		Result theResult;
 		try {
 			this.imagePlus.getProcessor().setAutoThreshold(thresholdType);
 			ResultsTable rt = new ResultsTable();
@@ -73,11 +77,13 @@ public class ProcessHelper {
 			ReaderCSV readerCSV = new ReaderCSV(resultCsvPath);
 			resultsMap = readerCSV.read();
 			rt.reset();
+			theResult = new Result(resultsMap, particleAnalyzer.getOutputImage().getBufferedImage());
 		} catch (Exception e) {
+			theResult = new Result();
 			System.out.println("Exception on countParticles");
 			e.printStackTrace();
 		}
-		return resultsMap;
+		return theResult;
 	}
 
 	public static void cropAndResize(ImagePlus imp, int targetWidth, int targetHeight) throws Exception {

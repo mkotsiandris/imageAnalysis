@@ -5,33 +5,33 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-import image.models.ImageResult;
+import image.models.ParticleResult;
 
 public class ReaderCSV {
 	private BufferedReader br;
 	private HashMap<String, String> map;
 	private String filePath;
-	public List<ImageResult> imageResults;
+	public List<ParticleResult> particleResults;
 
 	public ReaderCSV(String theFile) {
 		filePath = theFile;
 	}
 
-	public List<ImageResult> read() {
+	public List<ParticleResult> read() {
 		String line;
 		String csvSplitBy = ",";
 
 		try {
 			map = new HashMap<>();
-			imageResults = new ArrayList<>();
+			particleResults = new ArrayList<>();
 			br = new BufferedReader(new FileReader(filePath));
 			String[] rowHeaders = br.readLine().split(csvSplitBy);
 			rowHeaders[0] = "id";
 			while ((line = br.readLine()) != null) {
 				String[] row = line.split(csvSplitBy);
 				map = matchHeadersWithData(rowHeaders, row);
-				ImageResult imr = new ImageResult(map);
-				imageResults.add(imr);
+				ParticleResult imr = new ParticleResult(map);
+				particleResults.add(imr);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -44,7 +44,7 @@ public class ReaderCSV {
 				}
 			}
 		}
-		return imageResults;
+		return particleResults;
 	}
 
 	private HashMap<String, String> matchHeadersWithData(String[] headers, String[] data) {

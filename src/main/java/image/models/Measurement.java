@@ -1,8 +1,11 @@
 package image.models;
 
 
+import com.sun.tools.internal.jxc.apt.Const;
+import com.sun.tools.javac.code.Attribute;
 import ij.measure.Measurements;
-import sun.security.provider.SHA;
+
+import image.helpers.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,28 +13,10 @@ import java.util.List;
 
 public class Measurement {
 
-	public final String AREA = "Area";
-	public final String AREA_FRACTION = "Porocity";
-	public final String MIN_MAX = "Minimum and Maximum";
-	public final String CIRCULARITY = "Circularity";
-	public final String STD_DEV = "Standard Deviation";
-	public final String CENTER_OF_MASS = "Center of mass";
-	public final String SHAPE_DESCRIPTORS = "Shape Descriptors";
-	public final String FERET = "Feret";
-	public final String SKEWNESS = "Skeweness";
-	public final String KURTOSIS = "Kurtosis";
-	public final String MEDIAN = "Median";
-	public final String VOLUME = "Particle Volume Estimation";
-	public final String PERIMETER = "Perimeter";
-	public final String SPHERICITY = "Sphericity";
-	public final String SURFACE_DIAMETER = "Surface Diameter";
-	public final String VOLUME_TO_SURFACE = "Volume to Surface";
-
 	private List<String> measurementList;
 	public HashMap<String, Integer> measurementMap;
-	public Boolean isVolumeSelected = false;
-	public Boolean isSphericitySelected = false;
-	public Boolean isVolumeToSurfaceSelected = false;
+	public HashMap<String, Boolean> selectedMeasurementsMap = new HashMap<>();
+
 
 	public Measurement(){
 		this.populateMeasurementList();
@@ -40,49 +25,102 @@ public class Measurement {
 
 	private void populateMeasurementList(){
 		this.measurementList = new ArrayList<>();
-		this.measurementList.add(AREA);
-		this.measurementList.add(AREA_FRACTION);
-		this.measurementList.add(CIRCULARITY);
-		this.measurementList.add(SKEWNESS);
-		this.measurementList.add(STD_DEV);
-		this.measurementList.add(FERET);
-		this.measurementList.add(MEDIAN);
-		this.measurementList.add(SHAPE_DESCRIPTORS);
-		this.measurementList.add(VOLUME);
-		this.measurementList.add(PERIMETER);
-		this.measurementList.add(SPHERICITY);
-		this.measurementList.add(SURFACE_DIAMETER);
-		this.measurementList.add(VOLUME_TO_SURFACE);
-
+		this.measurementList.add(Constants.AREA);
+		this.measurementList.add(Constants.AREA_FRACTION);
+		this.measurementList.add(Constants.BOUNDING_PREFERENCES);
+		this.measurementList.add(Constants.CENTER_OF_MASS);
+		this.measurementList.add(Constants.CENTROID);
+		this.measurementList.add(Constants.FERET);
+		this.measurementList.add(Constants.FIT_ELLIPSE);
+		this.measurementList.add(Constants.INT_DEN);
+		this.measurementList.add(Constants.KURTOSIS);
+		this.measurementList.add(Constants.MEAN);
+		this.measurementList.add(Constants.MEDIAN);
+		this.measurementList.add(Constants.MIN_MAX);
+		this.measurementList.add(Constants.MODAL);
+		this.measurementList.add(Constants.PERIMETER);
+		this.measurementList.add(Constants.SHAPE_DESCRIPTORS);
+		this.measurementList.add(Constants.SKEWNESS);
+		this.measurementList.add(Constants.STD_DEV);
+		//Volume related measurements
+		this.measurementList.add(Constants.SPHERICITY);
+		this.measurementList.add(Constants.VOLUME);
+		this.measurementList.add(Constants.SURFACE_DIAMETER);
+		this.measurementList.add(Constants.VOLUME_TO_SURFACE);
+		this.measurementList.add(Constants.VOLUME_DIAMETER);
 	}
 
 	private void matchingMeasurementsWithName(){
 		this.measurementMap = new HashMap<>();
-		this.measurementMap.put(AREA, Measurements.AREA);
-		this.measurementMap.put(AREA_FRACTION, Measurements.AREA_FRACTION);
-		this.measurementMap.put(MIN_MAX, Measurements.MIN_MAX);
-		this.measurementMap.put(CIRCULARITY, Measurements.CIRCULARITY);
-		this.measurementMap.put(STD_DEV, Measurements.STD_DEV);
-		this.measurementMap.put(CENTER_OF_MASS, Measurements.CENTER_OF_MASS);
-		this.measurementMap.put(FERET, Measurements.FERET);
-		this.measurementMap.put(SHAPE_DESCRIPTORS, Measurements.SHAPE_DESCRIPTORS);
-		this.measurementMap.put(SKEWNESS, Measurements.SKEWNESS);
-		this.measurementMap.put(KURTOSIS, Measurements.KURTOSIS);
+		this.measurementMap.put(Constants.AREA, Measurements.AREA);
+		this.measurementMap.put(Constants.AREA_FRACTION, Measurements.AREA_FRACTION);
+		this.measurementMap.put(Constants.BOUNDING_PREFERENCES, Measurements.LIMIT);
+		this.measurementMap.put(Constants.CENTER_OF_MASS, Measurements.CENTER_OF_MASS);
+		this.measurementMap.put(Constants.CENTROID, Measurements.CENTROID);
+		this.measurementMap.put(Constants.FERET, Measurements.FERET);
+		this.measurementMap.put(Constants.FIT_ELLIPSE, Measurements.ELLIPSE);
+		this.measurementMap.put(Constants.INT_DEN, Measurements.INTEGRATED_DENSITY);
+		this.measurementMap.put(Constants.KURTOSIS, Measurements.KURTOSIS);
+		this.measurementMap.put(Constants.MEAN, Measurements.MEAN);
+		this.measurementMap.put(Constants.MEDIAN, Measurements.MEDIAN);
+		this.measurementMap.put(Constants.MIN_MAX, Measurements.MIN_MAX);
+		this.measurementMap.put(Constants.MODAL, Measurements.MODE);
+		this.measurementMap.put(Constants.PERIMETER, Measurements.PERIMETER);
+		this.measurementMap.put(Constants.SHAPE_DESCRIPTORS, Measurements.SHAPE_DESCRIPTORS);
+		this.measurementMap.put(Constants.SKEWNESS, Measurements.SKEWNESS);
+		this.measurementMap.put(Constants.STD_DEV, Measurements.STD_DEV);
 	}
 
 
 	public int convertMeasurementListToInt(String[] selectedMeasurements){
 		int result = 0;
 		for (int i = 0; i < selectedMeasurements.length; i++) {
-			if (selectedMeasurements[i].equals("Volume") || selectedMeasurements.equals("Sphericity")){
-				break;
-			} else {
+			this.selectedMeasurementsMap.put(selectedMeasurements[i], true);
+			if (!this.isMeasureVolumeRelated(selectedMeasurements[i])) {
 				Integer value = measurementMap.get(selectedMeasurements[i]);
 				result += value.intValue();
 			}
 		}
+		if ((selectedMeasurementsMap.get(Constants.VOLUME) != null)
+				|| (selectedMeasurementsMap.get(Constants.SPHERICITY) != null)
+				|| (selectedMeasurementsMap.get(Constants.VOLUME_DIAMETER) != null)
+				|| (selectedMeasurementsMap.get(Constants.VOLUME_TO_SURFACE) != null)
+				|| (selectedMeasurementsMap.get(Constants.SURFACE_DIAMETER) != null)){
+			if (selectedMeasurementsMap.get(Constants.SHAPE_DESCRIPTORS) == null) {
+//				selectedMeasurementsMap.put(Constants.SHAPE_DESCRIPTORS, true);
+				result = result + measurementMap.get(Constants.SHAPE_DESCRIPTORS).intValue();
+			}
+
+			if (selectedMeasurementsMap.get(Constants.AREA) == null) {
+//				selectedMeasurementsMap.put(Constants.AREA, true);
+				result = result + measurementMap.get(Constants.AREA).intValue();
+			}
+			if (selectedMeasurementsMap.get(Constants.FERET) == null) {
+//				selectedMeasurementsMap.put(Constants.FERET, true);
+				result = result + measurementMap.get(Constants.FERET).intValue();
+			}
+		}
+
 		return result;
 	}
+
+	private Boolean isMeasureVolumeRelated(String measure) {
+		Boolean isRelated = false;
+		if (measure.equals(Constants.VOLUME)) {
+			isRelated = true;
+		} else if (measure.equals(Constants.SPHERICITY)) {
+			isRelated = true;
+		} else if (measure.equals(Constants.VOLUME_TO_SURFACE)) {
+			isRelated = true;
+		} else if (measure.equals(Constants.VOLUME_DIAMETER)) {
+			isRelated = true;
+		} else if (measure.equals(Constants.SURFACE_DIAMETER)) {
+			isRelated = true;
+		}
+		return isRelated;
+	}
+
+
 
 	public List<String> getMeasurementList() {
 		return measurementList;

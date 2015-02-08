@@ -4,9 +4,10 @@ import ij.ImagePlus;
 
 import image.ApplicationMain;
 import image.helpers.FileMinion;
-import image.models.ImageResult;
+import image.models.ParticleResult;
 import image.models.Measurement;
 
+import image.models.Result;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 
@@ -35,7 +36,8 @@ public class IndexController implements Serializable {
 	private final String IMAGEANALYSIS = "imageAnalysis";
 	private final String DIR_PATH2 = "/src/main/webapp/WEB-INF/files/";
 	private final String DIR_PATH = "src/main/webapp/WEB-INF/files/";
-	private final String BLANK_IMAGE_PATH = "src/main/webapp/WEB-INF/files/blank.jpg";
+//	private final String BLANK_IMAGE_PATH = "src/main/webapp/WEB-INF/files/blank.jpg";
+	private final String BLANK_IMAGE_PATH = "/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/blank.jpg";
 	private final int BUFFER_SIZE = 6124;
 
 	//variables
@@ -43,12 +45,11 @@ public class IndexController implements Serializable {
 	private FileMinion fileMinion;
 	private List<String> measurements;
 	private String[] selectedMeasurements;
-	private String success;
 	private BufferedImage bufferedImage;
 	private String uploadedFilePath;
 	private String function;
-	private ImageResult imageResult;
-	private List<ImageResult> resultMap;
+	private Result result;
+	private List<ParticleResult> resultMap;
 
 	@PostConstruct
 	public void init(){
@@ -58,28 +59,27 @@ public class IndexController implements Serializable {
 	}
 
 	public String submitForm() {
-		try{
+		try {
 			String msg = FORM_SUBMITTED;
 			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
 			ApplicationMain applicationMain = new ApplicationMain(this.selectedMeasurements, this.thresholdType, imagePlus, uploadedFilePath);
 			this.resultMap = new ArrayList<>();
-			if (this.function.equals(IMAGEANALYSIS)){
-				this.resultMap = applicationMain.analyseImage();
+			if (this.function.equals(IMAGEANALYSIS)) {
+				this.result = applicationMain.analyseImage();
 			} else {
-				this.resultMap = applicationMain.countParticles();
+				this.result = applicationMain.countParticles();
 			}
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-		} catch(Exception e){
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		fileMinion.deleteDirectoryAndFiles(DIR_PATH + getSessionID());
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("result", this.resultMap);
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("result", this.result);
 		return "detail?faces-redirect=true";
 	}
 
 	public void handleFileUpload(FileUploadEvent event) {
-		success = "something";
 		String sessionID = this.getSessionID();
 		this.uploadedFilePath = DIR_PATH + sessionID+ "/" + event.getFile().getFileName();
 		try {
@@ -110,12 +110,9 @@ public class IndexController implements Serializable {
 							event.getFile().getSize() / 1024 + " Kb content type: " +
 							event.getFile().getContentType() + "The file was uploaded.");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
-			success = "YEI";
-
 		} catch (IOException e) {
 			this.uploadedFilePath = null;
 			e.printStackTrace();
-
 			FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_ERROR, "The files were not uploaded!", "");
 			FacesContext.getCurrentInstance().addMessage(null, error);
 		}
@@ -196,10 +193,6 @@ public class IndexController implements Serializable {
 		}
 		return imgPreview;
 
-	}
-
-	public String getSuccess() {
-		return success;
 	}
 
 	public void updateThresholdType(ValueChangeEvent event) {

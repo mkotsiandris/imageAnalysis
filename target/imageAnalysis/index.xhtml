@@ -29,30 +29,26 @@
 		<br/>
 		<br/>
 		<p:selectOneMenu id="function" value="#{indexController.function}">
-			<!--<f:selectItem itemLabel="Default image Analysis" itemValue="imageAnalysis" />-->
+			<f:selectItem itemLabel="Default image Analysis" itemValue="imageAnalysis" />
 			<f:selectItem itemLabel="Particle count and analysis" itemValue="particleAnalysis"/>
 		</p:selectOneMenu>
 		<br/>
 		<br/>
-		<h:outputText value="Grid:"/>
-		<p:selectManyCheckbox id="grid" value="#{indexController.selectedMeasurements}" layout="grid" columns="3">
+		<h:outputText value="Descriptors:"/>
+		<p:selectManyCheckbox id="grid" value="#{indexController.selectedMeasurements}" layout="grid" columns="6">
 			<f:selectItems value="#{indexController.measurements}" var="measurement" itemLabel="#{measurement}"
 			               itemValue="#{measurement}"/>
 		</p:selectManyCheckbox>
 		<br/>
 
-		<h:panelGrid columns="1" cellpadding="5">
-			<p:commandButton value="Preview" type="button" update="basic">
-                <p:ajax id="aj2" event="click" immediate="true" update="basic"/>
-            </p:commandButton>
-            <!--<p:ajax id="aj2" event="click" listener="#{getData.searchID}" immediate="true" update=":form:tabView:check :form:growl"/>-->
-
-        </h:panelGrid>
+        <p:panel id="basic" header="Image Preview" style="margin-bottom:20px">
+            <h:panelGrid columns="2" cellpadding="10">
+                <p:graphicImage value="#{indexController.imgPreview}" cache="false" onmouseup="#{indexController.imgPreview}"/>
+            </h:panelGrid>
+        </p:panel>
 
 		<br/>
 		<br/>
-		<h:outputText value="PrimeFaces Drag and Drop Upload"
-		              style="font:30px bold; margin-left:15%;"/>
 		<p:fileUpload fileUploadListener="#{indexController.handleFileUpload}"
 		              mode="advanced"
 		              update="messages"
@@ -63,14 +59,6 @@
 		              invalidSizeMessage="The maximum file size allowed is 10 Megabytes !"
 		              invalidFileMessage="You are allowed to upload only images !"/>
 		<p:growl id="messages" showDetail="true" life="5000"/>
-
-        <p:panel id="basic" header="Basic" footer="Movie Details" style="margin-bottom:20px">
-            <h:panelGrid columns="2" cellpadding="10">
-                <p:graphicImage value="#{indexController.imgPreview}" cache="false" onmouseup="#{indexController.imgPreview}"/>
-                <h:outputText
-                        value="The story begins as Don Vito Corleone..." />
-            </h:panelGrid>
-        </p:panel>
 
 		<p:commandButton id="submit" value="Submit" action="#{indexController.submitForm}" icon="ui-icon-check"/>
 		<p:dialog header="Values" modal="true" showEffect="clip" widgetVar="dlg" resizable="false">
