@@ -1,26 +1,24 @@
 package web;
 
-
 import ij.ImagePlus;
+
 import image.ApplicationMain;
 import image.helpers.FileMinion;
 import image.models.ImageResult;
 import image.models.Measurement;
+
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -35,7 +33,6 @@ public class IndexController implements Serializable {
 	//constants
 	private final String FORM_SUBMITTED = "The form submitted successfully!";
 	private final String IMAGEANALYSIS = "imageAnalysis";
-	private final String PARTICLEANALYSIS = "particleAnalysis";
 	private final String DIR_PATH2 = "/src/main/webapp/WEB-INF/files/";
 	private final String DIR_PATH = "src/main/webapp/WEB-INF/files/";
 	private final String BLANK_IMAGE_PATH = "src/main/webapp/WEB-INF/files/blank.jpg";
@@ -52,7 +49,6 @@ public class IndexController implements Serializable {
 	private String function;
 	private ImageResult imageResult;
 	private List<ImageResult> resultMap;
-	private DefaultStreamedContent imgPreview;
 
 	@PostConstruct
 	public void init(){
@@ -174,40 +170,8 @@ public class IndexController implements Serializable {
 		this.function = function;
 	}
 
-	public ImageResult getImageResult() {
-		return imageResult;
-	}
-
-	public void setImageResult(ImageResult imageResult) {
-		this.imageResult = imageResult;
-	}
-
-	public List<ImageResult> getResultMap() {
-		return resultMap;
-	}
-
-	public void setResultMap(List<ImageResult> resultMap) {
-		this.resultMap = resultMap;
-	}
-
-	public String getUploadedFilePath() {
-		return uploadedFilePath;
-	}
-
 	public DefaultStreamedContent getImgPreview() {
-//		try {
-//			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
-//			ApplicationMain applicationMain = new ApplicationMain(imagePlus, uploadedFilePath);
-//			BufferedImage temp = applicationMain.applyThreshold(this.thresholdType);
-//			ByteArrayOutputStream os = new ByteArrayOutputStream();
-//			ImageIO.write(temp, "jpg", os);
-//			InputStream is = new ByteArrayInputStream(os.toByteArray());
-//			return new DefaultStreamedContent(is, "image/jpeg");
-//		}catch (IOException e) {
-//			e.printStackTrace();
-//			return new DefaultStreamedContent();
-//		}
-//	}
+		DefaultStreamedContent imgPreview;
 		if (bufferedImage != null ) {
 			ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
 			ApplicationMain applicationMain = new ApplicationMain(imagePlus, uploadedFilePath);
@@ -239,7 +203,7 @@ public class IndexController implements Serializable {
 	}
 
 	public void updateThresholdType(ValueChangeEvent event) {
-		event.getNewValue().toString();
+		event.getNewValue();
 	}
 
 	public BufferedImage getBufferedImage() {

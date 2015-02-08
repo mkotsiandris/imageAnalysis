@@ -20,7 +20,12 @@ public class Measurement {
 	public final String FERET = "Feret";
 	public final String SKEWNESS = "Skeweness";
 	public final String KURTOSIS = "Kurtosis";
-	public final String VOLUME = "Volume";
+	public final String MEDIAN = "Median";
+	public final String VOLUME = "Particle Volume Estimation";
+	public final String PERIMETER = "Perimeter";
+	public final String SPHERICITY = "Sphericity";
+	public final String SURFACE_DIAMETER = "Surface Diameter";
+	public final String VOLUME_TO_SURFACE = "Volume to Surface";
 
 	private List<String> measurementList;
 	public HashMap<String, Integer> measurementMap;
@@ -41,11 +46,13 @@ public class Measurement {
 		this.measurementList.add(SKEWNESS);
 		this.measurementList.add(STD_DEV);
 		this.measurementList.add(FERET);
-		this.measurementList.add(KURTOSIS);
+		this.measurementList.add(MEDIAN);
 		this.measurementList.add(SHAPE_DESCRIPTORS);
-		this.measurementList.add(MIN_MAX);
-		this.measurementList.add(CENTER_OF_MASS);
 		this.measurementList.add(VOLUME);
+		this.measurementList.add(PERIMETER);
+		this.measurementList.add(SPHERICITY);
+		this.measurementList.add(SURFACE_DIAMETER);
+		this.measurementList.add(VOLUME_TO_SURFACE);
 
 	}
 

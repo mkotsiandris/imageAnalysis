@@ -6,7 +6,6 @@ import image.models.ImageResult;
 import image.models.Measurement;
 
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -54,29 +53,4 @@ public class ApplicationMain {
 		}
 
 	}
-
-	public String[] getSelectedMeasurements() {
-		return selectedMeasurements;
-	}
-
-	public void setSelectedMeasurements(String[] selectedMeasurements) {
-		this.selectedMeasurements = selectedMeasurements;
-	}
-
-	public String getSelectedThreshold() {
-		return selectedThreshold;
-	}
-
-	public void setSelectedThreshold(String selectedThreshold) {
-		this.selectedThreshold = selectedThreshold;
-	}
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
 }

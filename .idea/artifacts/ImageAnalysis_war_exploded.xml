@@ -2,7 +2,6 @@
   <artifact type="exploded-war" name="ImageAnalysis:war exploded">
     <output-path>$PROJECT_DIR$/target/imageAnalysis</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="ImageAnalysis/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="ImageAnalysis" />
@@ -15,6 +14,7 @@
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
         </element>
       </element>
+      <element id="javaee-facet-resources" facet="ImageAnalysis/web/Web" />
     </root>
   </artifact>
 </component>

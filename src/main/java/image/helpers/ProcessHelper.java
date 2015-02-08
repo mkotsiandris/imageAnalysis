@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.HashMap;
 
 public class ProcessHelper {
 	private ImagePlus imagePlus;
