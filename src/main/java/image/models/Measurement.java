@@ -20,9 +20,13 @@ public class Measurement {
 	public final String FERET = "Feret";
 	public final String SKEWNESS = "Skeweness";
 	public final String KURTOSIS = "Kurtosis";
+	public final String VOLUME = "Volume";
 
 	private List<String> measurementList;
 	public HashMap<String, Integer> measurementMap;
+	public Boolean isVolumeSelected = false;
+	public Boolean isSphericitySelected = false;
+	public Boolean isVolumeToSurfaceSelected = false;
 
 	public Measurement(){
 		this.populateMeasurementList();
@@ -30,12 +34,19 @@ public class Measurement {
 	}
 
 	private void populateMeasurementList(){
-		this.measurementList = new ArrayList<String>();
+		this.measurementList = new ArrayList<>();
 		this.measurementList.add(AREA);
 		this.measurementList.add(AREA_FRACTION);
 		this.measurementList.add(CIRCULARITY);
+		this.measurementList.add(SKEWNESS);
 		this.measurementList.add(STD_DEV);
 		this.measurementList.add(FERET);
+		this.measurementList.add(KURTOSIS);
+		this.measurementList.add(SHAPE_DESCRIPTORS);
+		this.measurementList.add(MIN_MAX);
+		this.measurementList.add(CENTER_OF_MASS);
+		this.measurementList.add(VOLUME);
+
 	}
 
 	private void matchingMeasurementsWithName(){
@@ -56,8 +67,12 @@ public class Measurement {
 	public int convertMeasurementListToInt(String[] selectedMeasurements){
 		int result = 0;
 		for (int i = 0; i < selectedMeasurements.length; i++) {
-			Integer value = measurementMap.get(selectedMeasurements[i]);
-			result += value.intValue();
+			if (selectedMeasurements[i].equals("Volume") || selectedMeasurements.equals("Sphericity")){
+				break;
+			} else {
+				Integer value = measurementMap.get(selectedMeasurements[i]);
+				result += value.intValue();
+			}
 		}
 		return result;
 	}

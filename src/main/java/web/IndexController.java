@@ -46,17 +46,7 @@ public class IndexController implements Serializable {
 	private FileMinion fileMinion;
 	private List<String> measurements;
 	private String[] selectedMeasurements;
-
-	public String getSuccess() {
-		return success;
-	}
-
 	private String success;
-
-	public BufferedImage getBufferedImage() {
-		return bufferedImage;
-	}
-
 	private BufferedImage bufferedImage;
 	private String uploadedFilePath;
 	private String function;
@@ -244,8 +234,17 @@ public class IndexController implements Serializable {
 
 	}
 
+	public String getSuccess() {
+		return success;
+	}
+
 	public void updateThresholdType(ValueChangeEvent event) {
 		event.getNewValue().toString();
 	}
+
+	public BufferedImage getBufferedImage() {
+		return bufferedImage;
+	}
+
 
 }
