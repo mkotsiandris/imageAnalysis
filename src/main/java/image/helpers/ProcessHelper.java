@@ -13,6 +13,7 @@ import image.models.Result;
 
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -37,12 +38,13 @@ public class ProcessHelper {
 			ResultsTable rt = new ResultsTable();
 			Analyzer analyzer = new Analyzer(this.imagePlus, measurements, rt);
 			analyzer.measure();
+
 			new File(resultCsvPath);
 			rt.saveAs(resultCsvPath);
 			ReaderCSV readerCSV = new ReaderCSV(resultCsvPath);
 			resultsMap = readerCSV.read();
 			//makeExtraCalculations(resultsMap);
-			theResult = new Result(resultsMap,this.applyThreshold(threshold));
+			theResult = new Result(resultsMap, this.applyThreshold(threshold));
 			rt.reset();
 		} catch (Exception e) {
 			theResult = new Result();
@@ -76,14 +78,32 @@ public class ProcessHelper {
 			rt.saveAs(resultCsvPath);
 			ReaderCSV readerCSV = new ReaderCSV(resultCsvPath);
 			resultsMap = readerCSV.read();
-			rt.reset();
 			theResult = new Result(resultsMap, particleAnalyzer.getOutputImage().getBufferedImage());
+			theResult.staticParticle = new ParticleResult(this.calculateAverageModel(rt));
+			theResult.staticParticle.setId("Average Particle");
+			rt.reset();
 		} catch (Exception e) {
 			theResult = new Result();
 			System.out.println("Exception on countParticles");
 			e.printStackTrace();
 		}
 		return theResult;
+	}
+
+	public HashMap<String, String> calculateAverageModel(ResultsTable rt) {
+		HashMap<String, String> averageMap = new HashMap<>();
+		for (int i = 0; i<rt.getLastColumn(); i++){
+			averageMap.put(rt.getColumnHeading(i), getAverageFromArray(rt.getColumn(i)));
+		}
+		return averageMap;
+	}
+
+	public String getAverageFromArray(float[] array) {
+		float temp = 0;
+		for (int i = 0; i<array.length; i++) {
+			temp = temp + array[i];
+		}
+		return String.valueOf(temp/array.length);
 	}
 
 	public static void cropAndResize(ImagePlus imp, int targetWidth, int targetHeight) throws Exception {

@@ -128,7 +128,6 @@ public class ResultController implements Serializable {
 		return isAreaSelected;
 	}
 
-
 	public Boolean getIsVolumeSelected() {
 		return isVolumeSelected;
 	}
@@ -204,8 +203,6 @@ public class ResultController implements Serializable {
 	public Boolean getIsKurtosisSelected() {
 		return isKurtosisSelected;
 	}
-
-
 
 }
 

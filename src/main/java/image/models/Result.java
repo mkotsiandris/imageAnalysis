@@ -7,12 +7,15 @@ import java.util.List;
 public class Result {
 
 	private List<ParticleResult> particleResults;
+	public ParticleResult staticParticle;
 	private HashMap<String, Boolean> selectedMeasurements;
 	private BufferedImage processedImage;
+	public  HashMap<String, String> averageMap;
 
 	public Result(List<ParticleResult> theParticleResults, BufferedImage theImage) {
 		this.particleResults = theParticleResults;
 		this.processedImage = theImage;
+		this.particleResults.add(0, staticParticle);
 	}
 
 	public Result(){
@@ -45,5 +48,9 @@ public class Result {
 		return selectedMeasurements;
 	}
 
+
+	private void makeStatisticCalculations() {
+
+	}
 
 }
