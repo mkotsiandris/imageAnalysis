@@ -45,6 +45,9 @@ public class ProcessHelper {
 			resultsMap = readerCSV.read();
 			//makeExtraCalculations(resultsMap);
 			theResult = new Result(resultsMap, this.applyThreshold(threshold));
+			theResult.staticParticle = new ParticleResult(this.calculateAverageModel(rt, readerCSV.headersArray));
+			theResult.staticParticle.setId("Average Particle");
+			theResult.particleResults.add(0, theResult.staticParticle);
 			rt.reset();
 		} catch (Exception e) {
 			theResult = new Result();
@@ -79,7 +82,7 @@ public class ProcessHelper {
 			ReaderCSV readerCSV = new ReaderCSV(resultCsvPath);
 			resultsMap = readerCSV.read();
 			theResult = new Result(resultsMap, particleAnalyzer.getOutputImage().getBufferedImage());
-			theResult.staticParticle = new ParticleResult(this.calculateAverageModel(rt));
+			theResult.staticParticle = new ParticleResult(this.calculateAverageModel(rt, readerCSV.headersArray));
 			theResult.staticParticle.setId("Average Particle");
 			rt.reset();
 		} catch (Exception e) {
@@ -90,10 +93,11 @@ public class ProcessHelper {
 		return theResult;
 	}
 
-	public HashMap<String, String> calculateAverageModel(ResultsTable rt) {
+	public HashMap<String, String> calculateAverageModel(ResultsTable rt, String[] headers) {
 		HashMap<String, String> averageMap = new HashMap<>();
-		for (int i = 0; i<rt.getLastColumn(); i++){
-			averageMap.put(rt.getColumnHeading(i), getAverageFromArray(rt.getColumn(i)));
+		for (int i = 1; i<headers.length; i++){
+			int idx = rt.getColumnIndex(headers[i]);
+			averageMap.put(rt.getColumnHeading(idx), getAverageFromArray(rt.getColumn(idx)));
 		}
 		return averageMap;
 	}

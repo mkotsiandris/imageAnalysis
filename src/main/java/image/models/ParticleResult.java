@@ -81,7 +81,7 @@ public class ParticleResult {
 		this.perimeter = replaceNull(map.get("Perim."));
 		this.mean_grey_value = replaceNull(map.get("Mean"));
 		this.median = replaceNull(map.get("median"));
-		this.calculateExtraParameters();
+//		this.calculateExtraParameters();
 	}
 
 	public void calculateExtraParameters()

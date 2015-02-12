@@ -12,6 +12,7 @@ public class ReaderCSV {
 	private HashMap<String, String> map;
 	private String filePath;
 	public List<ParticleResult> particleResults;
+	public String[] headersArray;
 
 	public ReaderCSV(String theFile) {
 		filePath = theFile;
@@ -26,6 +27,7 @@ public class ReaderCSV {
 			particleResults = new ArrayList<>();
 			br = new BufferedReader(new FileReader(filePath));
 			String[] rowHeaders = br.readLine().split(csvSplitBy);
+			this.headersArray = rowHeaders;
 			rowHeaders[0] = "id";
 			while ((line = br.readLine()) != null) {
 				String[] row = line.split(csvSplitBy);
