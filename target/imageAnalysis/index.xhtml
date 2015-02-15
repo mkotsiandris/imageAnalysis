@@ -35,6 +35,9 @@
 			<f:selectItem itemLabel="Particle count and analysis" itemValue="particleAnalysis"/>
 		</p:selectOneMenu>
 		<br/>
+		<p:commandButton value="Preview" type="button" update="basic">
+			<p:ajax id="aj2" event="click" immediate="true" update="basic"/>
+		</p:commandButton>
 		<br/>
 		<h:outputText value="Descriptors:"/>
 		<p:selectManyCheckbox id="grid" value="#{indexController.selectedMeasurements}" layout="grid" columns="6">
