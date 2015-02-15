@@ -81,12 +81,12 @@ public class ParticleResult {
 		this.perimeter = replaceNull(map.get("Perim."));
 		this.mean_grey_value = replaceNull(map.get("Mean"));
 		this.median = replaceNull(map.get("median"));
-//		this.calculateExtraParameters();
+		this.calculateExtraParameters();
 	}
 
-	public void calculateExtraParameters()
-	{
-		AnalysisHelper analysisHelper = new AnalysisHelper();
+	public void calculateExtraParameters() {
+		if (this.area != null && this.circularity != null && this.feret !=null) {
+			AnalysisHelper analysisHelper = new AnalysisHelper();
 			double volume = analysisHelper.findApproximateVolume(Double.parseDouble(this.circularity),
 					Double.parseDouble(this.feret_x),
 					Double.parseDouble(this.feret_y));
@@ -95,10 +95,11 @@ public class ParticleResult {
 			double volumeDiameter = analysisHelper.getVolumeDiameter(volume);
 			double volumeToSurface = analysisHelper.getVolumeToSurface(volume, Double.parseDouble(this.area));
 			this.volume = Double.toString(volume);
-			this.surfaceDiameter =  Double.toString(surfaceDiameter);
+			this.surfaceDiameter = Double.toString(surfaceDiameter);
 			this.sphericity = Double.toString(sphericity);
 			this.volumeDiameter = Double.toString(volumeDiameter);
 			this.volumeToSurface = Double.toString(volumeToSurface);
+		}
 	}
 
 	public String getId() {
