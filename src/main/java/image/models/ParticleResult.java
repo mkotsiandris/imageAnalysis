@@ -2,17 +2,10 @@ package image.models;
 
 import image.helpers.AnalysisHelper;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-public class ImageResult {
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
+public class ParticleResult {
 	private String id;
 	private String angle;
 	private String area;
@@ -52,7 +45,7 @@ public class ImageResult {
 	private String volumeDiameter = "";
 	private String volumeToSurface = "";
 
-	public ImageResult(HashMap<String, String> map) {
+	public ParticleResult(HashMap<String, String> map) {
 		this.id = map.get("id");
 		this.angle = replaceNull(map.get("Angle"));
 		this.area = replaceNull(map.get("Area"));
@@ -91,21 +84,32 @@ public class ImageResult {
 		this.calculateExtraParameters();
 	}
 
-	public void calculateExtraParameters(){
-		AnalysisHelper analysisHelper = new AnalysisHelper();
-		if (!this.volume.isEmpty() && !this.area.isEmpty()) {
-			double volume = analysisHelper.findApproximateVolume(Double.parseDouble(this.circularity));
+	public void calculateExtraParameters() {
+		if (this.area != null && this.circularity != null && this.feret !=null) {
+			AnalysisHelper analysisHelper = new AnalysisHelper();
+			double volume = analysisHelper.findApproximateVolume(Double.parseDouble(this.circularity),
+					Double.parseDouble(this.feret_x),
+					Double.parseDouble(this.feret_y));
 			double surfaceDiameter = analysisHelper.getSurfaceDiameter(Double.parseDouble(this.area));
 			double sphericity = analysisHelper.getSphericity(volume, Double.parseDouble(this.area));
 			double volumeDiameter = analysisHelper.getVolumeDiameter(volume);
 			double volumeToSurface = analysisHelper.getVolumeToSurface(volume, Double.parseDouble(this.area));
 			this.volume = Double.toString(volume);
-			this.surfaceDiameter =  Double.toString(surfaceDiameter);
+			this.surfaceDiameter = Double.toString(surfaceDiameter);
 			this.sphericity = Double.toString(sphericity);
 			this.volumeDiameter = Double.toString(volumeDiameter);
 			this.volumeToSurface = Double.toString(volumeToSurface);
 		}
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 
 	public String replaceNull(String input) {
 		return input == null ? "" : input;

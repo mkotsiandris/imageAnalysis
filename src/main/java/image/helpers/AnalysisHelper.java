@@ -1,30 +1,30 @@
 package image.helpers;
 
+import image.models.ParticleResult;
+
+import java.util.List;
+
 public class AnalysisHelper {
 
 	final double PI = 3.14;
-
-	private double length = 0.0;
-	private double width = 0.0;
-	private double feretDiameter = 0.0;
 	private double volume = 0.0;
 
-	public double findApproximateVolume(double circularity)
+	public double findApproximateVolume(double circularity, double feretDiameter, double length)
 	{
 		if (circularity > 0.750){
-			volume = this.getEqualSphericalVolume(this.feretDiameter, this.length, this.width);
+			volume = this.getEqualSphericalVolume(feretDiameter);
 		} else {
-			volume = this.getEqualCylinderVolume(this.feretDiameter, this.length, this.width);
+			volume = this.getEqualCylinderVolume(feretDiameter, length);
 		}
 		return volume;
 	}
 
-	private double getEqualCylinderVolume(double feretDiameter, double length, double width)
+	private double getEqualCylinderVolume(double feretDiameter, double length)
 	{
 		return PI*feretDiameter*length/2;
 	}
 
-	private double getEqualSphericalVolume(double feretDiameter, double length, double width)
+	private double getEqualSphericalVolume(double feretDiameter)
 	{
 		double radius = (feretDiameter/2);
 		double volume = Math.pow(radius, 3)*PI*4/3;

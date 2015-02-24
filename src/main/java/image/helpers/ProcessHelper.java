@@ -8,14 +8,15 @@ import ij.plugin.filter.Analyzer;
 import ij.plugin.filter.ParticleAnalyzer;
 import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
-import image.models.ImageResult;
+import image.models.ParticleResult;
+import image.models.Result;
 
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.HashMap;
 
 public class ProcessHelper {
 	private ImagePlus imagePlus;
@@ -29,28 +30,48 @@ public class ProcessHelper {
 		this.imageConverter.convertToGray8();
 	}
 
-
-	public List<ImageResult> analyseImage(int measurements, String threshold) throws NullPointerException {
-		List<ImageResult> resultsMap = new ArrayList<>();
+	public Result analyseImage(int measurements, String threshold) throws NullPointerException {
+		List<ParticleResult> resultsMap = new ArrayList<>();
+		Result theResult;
 		try {
 			this.imagePlus.getProcessor().setAutoThreshold(threshold);
 			ResultsTable rt = new ResultsTable();
 			Analyzer analyzer = new Analyzer(this.imagePlus, measurements, rt);
 			analyzer.measure();
+
 			new File(resultCsvPath);
 			rt.saveAs(resultCsvPath);
 			ReaderCSV readerCSV = new ReaderCSV(resultCsvPath);
 			resultsMap = readerCSV.read();
 			//makeExtraCalculations(resultsMap);
+			theResult = new Result(resultsMap, this.applyThreshold(threshold));
+			theResult.staticParticle = new ParticleResult(this.calculateAverageModel(rt, readerCSV.headersArray));
+			theResult.staticParticle.setId("Average Particle");
+			theResult.particleResults.add(0, theResult.staticParticle);
 			rt.reset();
 		} catch (Exception e) {
+			theResult = new Result();
 			e.printStackTrace();
 		}
-		return resultsMap;
+		return theResult;
 	}
 
-	public List<ImageResult> countParticles(String thresholdType, int measurements) {
-		List<ImageResult> resultsMap = new ArrayList<>();
+	public BufferedImage applyThreshold(String threshold) {
+		ImagePlus temp = new ImagePlus();
+		try {
+			this.imagePlus.getProcessor().setAutoThreshold(threshold);
+			temp = this.imagePlus;
+		} catch (Exception e) {
+			System.out.println("Exception on countParticles");
+			e.printStackTrace();
+		}
+		return temp.getBufferedImage();
+
+	}
+
+	public Result countParticles(String thresholdType, int measurements) {
+		List<ParticleResult> resultsMap = new ArrayList<>();
+		Result theResult;
 		try {
 			this.imagePlus.getProcessor().setAutoThreshold(thresholdType);
 			ResultsTable rt = new ResultsTable();
@@ -60,12 +81,33 @@ public class ProcessHelper {
 			rt.saveAs(resultCsvPath);
 			ReaderCSV readerCSV = new ReaderCSV(resultCsvPath);
 			resultsMap = readerCSV.read();
+			theResult = new Result(resultsMap, particleAnalyzer.getOutputImage().getBufferedImage());
+			theResult.staticParticle = new ParticleResult(this.calculateAverageModel(rt, readerCSV.headersArray));
+			theResult.staticParticle.setId("Average Particle");
 			rt.reset();
 		} catch (Exception e) {
+			theResult = new Result();
 			System.out.println("Exception on countParticles");
 			e.printStackTrace();
 		}
-		return resultsMap;
+		return theResult;
+	}
+
+	public HashMap<String, String> calculateAverageModel(ResultsTable rt, String[] headers) {
+		HashMap<String, String> averageMap = new HashMap<>();
+		for (int i = 1; i<headers.length; i++){
+			int idx = rt.getColumnIndex(headers[i]);
+			averageMap.put(rt.getColumnHeading(idx), getAverageFromArray(rt.getColumn(idx)));
+		}
+		return averageMap;
+	}
+
+	public String getAverageFromArray(float[] array) {
+		float temp = 0;
+		for (int i = 0; i<array.length; i++) {
+			temp = temp + array[i];
+		}
+		return String.valueOf(temp/array.length);
 	}
 
 	public static void cropAndResize(ImagePlus imp, int targetWidth, int targetHeight) throws Exception {

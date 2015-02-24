@@ -2,9 +2,11 @@ package image;
 
 import ij.ImagePlus;
 import image.helpers.ProcessHelper;
-import image.models.ImageResult;
+import image.models.ParticleResult;
 import image.models.Measurement;
+import image.models.Result;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,44 +23,42 @@ public class ApplicationMain {
 		this.selectedMeasurements = selectedMeasurements;
 		this.selectedThreshold = selectedThreshold;
 		this.measurement = new Measurement();
+
 		this.imagePlus = imagePlus;
 		this.filePath = theUploadedFilePath;
 	}
 
-	public List<ImageResult> analyseImage(){
+	public ApplicationMain(ImagePlus imagePlus, String uploadedFilePath){
+		this.imagePlus = imagePlus;
+		this.filePath = uploadedFilePath;
+	}
+
+	public Result analyseImage(){
+		Result theResult;
 		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
 		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
-		return processHelper.analyseImage(measurements, this.selectedThreshold);
+		theResult = processHelper.analyseImage(measurements, this.selectedThreshold);
+		theResult.setSelectedMeasurements(this.measurement.selectedMeasurementsMap);
+		return theResult;
 	}
 
-	public List<ImageResult> countParticles() {
+	public Result  countParticles() {
+		Result theResult;
 		ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
 		int measurements = this.measurement.convertMeasurementListToInt(this.selectedMeasurements);
-		return processHelper.countParticles(this.selectedThreshold, measurements);
+		theResult =  processHelper.countParticles(this.selectedThreshold, measurements);
+		theResult.setSelectedMeasurements(this.measurement.selectedMeasurementsMap);
+		return theResult;
 	}
 
-	public String[] getSelectedMeasurements() {
-		return selectedMeasurements;
-	}
+	public BufferedImage applyThreshold(String selectedThreshold){
+		if (selectedThreshold != null){
+			ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
+			return processHelper.applyThreshold(selectedThreshold);
+		} else {
+			ProcessHelper processHelper = new ProcessHelper(this.imagePlus, this.filePath);
+			return processHelper.applyThreshold("Default");
+		}
 
-	public void setSelectedMeasurements(String[] selectedMeasurements) {
-		this.selectedMeasurements = selectedMeasurements;
 	}
-
-	public String getSelectedThreshold() {
-		return selectedThreshold;
-	}
-
-	public void setSelectedThreshold(String selectedThreshold) {
-		this.selectedThreshold = selectedThreshold;
-	}
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
 }
