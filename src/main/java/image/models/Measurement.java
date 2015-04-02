@@ -1,8 +1,5 @@
 package image.models;
 
-
-import com.sun.tools.internal.jxc.apt.Const;
-import com.sun.tools.javac.code.Attribute;
 import ij.measure.Measurements;
 
 import image.helpers.Constants;
