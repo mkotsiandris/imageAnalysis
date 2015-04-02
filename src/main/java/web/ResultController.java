@@ -5,9 +5,7 @@ import image.models.ParticleResult;
 import image.models.Result;
 import org.primefaces.model.DefaultStreamedContent;
 
-import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -35,7 +33,7 @@ public class ResultController implements Serializable {
 	private Boolean isBoundingPrefsSelected = false;
 	private Boolean isIntegratedDensitySelected = false;
 	private Boolean isSkewenessSelected = false;
-	private Boolean isPorocitySelected = false;
+	private Boolean isPorositySelected = false;
 	private Boolean isMeanGrayValueSelected = false;
 	private Boolean isModalGrayValueSelected = false;
 	private Boolean isCentroidSelected = false;
@@ -98,7 +96,7 @@ public class ResultController implements Serializable {
 
 	private void initializeRenderedColumns(HashMap<String, Boolean> theMap) {
 		this.isAreaSelected = theMap.get(Constants.AREA);
-		this.isPorocitySelected = theMap.get(Constants.AREA_FRACTION);
+		this.isPorositySelected = theMap.get(Constants.AREA_FRACTION);
 		this.isStandardDeviationSelected = theMap.get(Constants.STD_DEV);
 		this.isBoundingPrefsSelected = theMap.get(Constants.BOUNDING_PREFERENCES);
 		this.isShapeDescriptorsSelected = theMap.get(Constants.SHAPE_DESCRIPTORS);
@@ -168,8 +166,8 @@ public class ResultController implements Serializable {
 		return isSkewenessSelected;
 	}
 
-	public Boolean getIsPorocitySelected() {
-		return isPorocitySelected;
+	public Boolean getIsPorositySelected() {
+		return isPorositySelected;
 	}
 
 	public Boolean getIsMeanGrayValueSelected() {
