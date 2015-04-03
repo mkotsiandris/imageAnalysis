@@ -13,8 +13,6 @@ import org.primefaces.model.DefaultStreamedContent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.imageio.ImageIO;
@@ -25,10 +23,11 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 
-@ManagedBean(name = "indexController")
+@Named("indexController")
 @SessionScoped
-
 public class IndexController implements Serializable {
 
 	//constants

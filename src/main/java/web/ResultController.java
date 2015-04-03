@@ -6,8 +6,6 @@ import image.models.Result;
 import org.primefaces.model.DefaultStreamedContent;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,9 +13,10 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import javax.inject.Named;
 
-@ManagedBean(name = "resultController")
-@javax.faces.bean.SessionScoped
+@Named("resultController")
+@SessionScoped
 public class ResultController implements Serializable {
 
 	private final String BLANK_IMAGE_PATH = "/Users/cerebro/Projects/imageAnalysis/src/main/webapp/WEB-INF/files/blank.jpg";
