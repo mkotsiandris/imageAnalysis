@@ -52,8 +52,13 @@ public class AnalysisResource {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response analyze(@FormParam("image") String image) {
+    public Response analyze(@FormParam("image") String image,
+            @FormParam("filter") String filter,
+            @FormParam("type") String type) {
         try {
+            if (filter == null || filter.isEmpty()) {
+                filter = "Default";
+            }
             System.out.println(image);
             String fileName = UUID.randomUUID().toString();
             java.nio.file.Path path = FileSystems.getDefault().getPath("tmp", fileName);
@@ -70,17 +75,24 @@ public class AnalysisResource {
             Measurement measurementModel = new Measurement();
             List<String> selectedMeasurements = measurementModel.getMeasurementList();
             ApplicationMain applicationMain = new ApplicationMain(
-                    selectedMeasurements.toArray(new String[selectedMeasurements.size()]), "Default", imagePlus, fileName);
+                    selectedMeasurements.toArray(new String[selectedMeasurements.size()]), filter, imagePlus, fileName);
 
-            Result result = applicationMain.analyseImage();
+            Result result = null;
+            if (type == null || type.isEmpty() || type.equals("Analyze")) {
+                result = applicationMain.analyseImage();
+            } else if (type.equals("Count")) {
+                result = applicationMain.countParticles();
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).entity("bad type provided").build();
+            }
 
             Logger.getLogger(AnalysisResource.class.getName()).log(Level.INFO, "Deleting tmp file:{0}", fileName);
             path.toFile().delete();
-            System.out.println("Number of ParticleResults:"+result.getParticleResults().size());
+            System.out.println("Number of ParticleResults:" + result.getParticleResults().size());
             return Response.ok(result.getParticleResults()).build();
         } catch (MalformedURLException ex) {
             Logger.getLogger(AnalysisResource.class.getName()).log(Level.SEVERE, null, ex);
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("bad uri provided").build();
         } catch (IOException ex) {
             Logger.getLogger(AnalysisResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
