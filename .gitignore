@@ -48,3 +48,4 @@ crashlytics-build.properties
 #compiled resources
 target/
 src/main/webapp/WEB-INF/files/
+/nb-configuration.xml
