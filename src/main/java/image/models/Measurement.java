@@ -1,6 +1,5 @@
 package image.models;
 
-
 import ij.measure.Measurements;
 
 import image.helpers.Constants;

@@ -84,6 +84,7 @@ public class ProcessHelper {
 			theResult = new Result(resultsMap, particleAnalyzer.getOutputImage().getBufferedImage());
 			theResult.staticParticle = new ParticleResult(this.calculateAverageModel(rt, readerCSV.headersArray));
 			theResult.staticParticle.setId("Average Particle");
+			theResult.particleResults.add(0,theResult.staticParticle);
 			rt.reset();
 		} catch (Exception e) {
 			theResult = new Result();
