@@ -85,16 +85,16 @@ public class Measurement {
 				|| (selectedMeasurementsMap.get(Constants.SURFACE_DIAMETER) != null)){
 			if (selectedMeasurementsMap.get(Constants.SHAPE_DESCRIPTORS) == null) {
 //				selectedMeasurementsMap.put(Constants.SHAPE_DESCRIPTORS, true);
-				result = result + measurementMap.get(Constants.SHAPE_DESCRIPTORS).intValue();
+				result = result + Measurements.SHAPE_DESCRIPTORS;
 			}
 
 			if (selectedMeasurementsMap.get(Constants.AREA) == null) {
 //				selectedMeasurementsMap.put(Constants.AREA, true);
-				result = result + measurementMap.get(Constants.AREA).intValue();
+				result = result + Measurements.AREA;
 			}
 			if (selectedMeasurementsMap.get(Constants.FERET) == null) {
 //				selectedMeasurementsMap.put(Constants.FERET, true);
-				result = result + measurementMap.get(Constants.FERET).intValue();
+				result = result + Measurements.FERET;
 			}
 		}
 

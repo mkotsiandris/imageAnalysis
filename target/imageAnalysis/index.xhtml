@@ -4,18 +4,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+		>
 <h:head>
 	<title>Image analysis page</title>
+	<h:outputStylesheet library="css" name="style.css"  />
 </h:head>
 <h:body>
-
 	<p:messages id="theMessages" showDetail="true" autoUpdate="true" closable="true"/>
-	<br/>
-	<br/>
-	<br/>
-	<h:outputText value="Image Analysis"
-	              style="font:30px bold; margin-left:15%;"/>
+	<div class="app_title">
+		<h:outputText value="Image Analysis Application"
+		              style="font:30px bold;"/>
+	</div>
+
 	<h:form enctype="multipart/form-data">
 		<p:outputLabel for="thresholdType" value="Select the threshold type:"/>
 		<p:selectOneMenu id="thresholdType" onchange="submit()" valueChangeListener="#{indexController.updateThresholdType}" value="#{indexController.thresholdType}">
@@ -28,11 +30,14 @@
         </p:selectOneMenu>
 		<br/>
 		<br/>
-		<p:selectOneMenu id="function" value="#{indexController.function}">
+		<p:selectOneMenu id="function" value="#{indexController.function}" columns="4">
 			<f:selectItem itemLabel="Default image Analysis" itemValue="imageAnalysis" />
 			<f:selectItem itemLabel="Particle count and analysis" itemValue="particleAnalysis"/>
 		</p:selectOneMenu>
 		<br/>
+		<p:commandButton value="Preview" type="button" update="basic">
+			<p:ajax id="aj2" event="click" immediate="true" update="basic"/>
+		</p:commandButton>
 		<br/>
 		<h:outputText value="Descriptors:"/>
 		<p:selectManyCheckbox id="grid" value="#{indexController.selectedMeasurements}" layout="grid" columns="6">
@@ -69,5 +74,10 @@
 			</p:outputPanel>
 		</p:dialog>
 	</h:form>
+	<!--<div id="footer" class="footer_center">-->
+		<!--<ui:insert name="footer" >-->
+			<!--<ui:include src="footer.xhtml" />-->
+		<!--</ui:insert>-->
+	<!--</div>-->
 </h:body>
 </html>
