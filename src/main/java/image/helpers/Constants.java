@@ -5,7 +5,7 @@ package image.helpers;
  */
 public class Constants {
 	public static final String AREA = "Area";
-	public static final String AREA_FRACTION = "Porocity";
+	public static final String AREA_FRACTION = "Porosity";
 	public static final String MIN_MAX = "Minimum and Maximum Grey Values";
 	public static final String CIRCULARITY = "Circularity";
 	public static final String STD_DEV = "Standard Deviation";
