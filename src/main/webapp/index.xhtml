@@ -19,7 +19,7 @@
 	</div>
 
 	<h:form enctype="multipart/form-data">
-		<p:outputLabel for="thresholdType" value="Select the threshold type:"/>
+		<p:outputLabel for="thresholdType" value="Select the filter type:"/>
 		<p:selectOneMenu id="thresholdType" onchange="submit()" valueChangeListener="#{indexController.updateThresholdType}" value="#{indexController.thresholdType}">
 			<f:selectItem itemLabel="Default" itemValue="Default"/>
 			<f:selectItem itemLabel="Huang" itemValue="Huang"/>
