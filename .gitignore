@@ -49,3 +49,4 @@ crashlytics-build.properties
 target/
 src/main/webapp/WEB-INF/files/
 /nb-configuration.xml
+/nbactions.xml
