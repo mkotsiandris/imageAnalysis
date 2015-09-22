@@ -19,7 +19,7 @@
 	</div>
 
 	<h:form enctype="multipart/form-data">
-		<p:outputLabel for="thresholdType" value="Select the threshold type:"/>
+		<p:outputLabel for="thresholdType" value="Select the filter type:"/>
 		<p:selectOneMenu id="thresholdType" onchange="submit()" valueChangeListener="#{indexController.updateThresholdType}" value="#{indexController.thresholdType}">
 			<f:selectItem itemLabel="Default" itemValue="Default"/>
 			<f:selectItem itemLabel="Huang" itemValue="Huang"/>
@@ -30,8 +30,8 @@
         </p:selectOneMenu>
 		<br/>
 		<br/>
-		<p:selectOneMenu id="function" value="#{indexController.function}" columns="4">
-			<f:selectItem itemLabel="Default image Analysis" itemValue="imageAnalysis" />
+		<p:selectOneMenu id="function" value="#{indexController.function}">
+			<f:selectItem itemLabel="Full image Analysis" itemValue="imageAnalysis" />
 			<f:selectItem itemLabel="Particle count and analysis" itemValue="particleAnalysis"/>
 		</p:selectOneMenu>
 		<br/>

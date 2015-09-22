@@ -6,7 +6,7 @@ package image.helpers;
 public class Constants {
 	public static final String AREA = "Area";
 	public static final String AREA_FRACTION = "Porosity";
-	public static final String MIN_MAX = "Minimum and Maximum";
+	public static final String MIN_MAX = "Minimum and Maximum Grey Values";
 	public static final String CIRCULARITY = "Circularity";
 	public static final String STD_DEV = "Standard Deviation";
 	public static final String INT_DEN = "Integrated Density";
@@ -18,8 +18,8 @@ public class Constants {
 	public static final String MEDIAN = "Median";
 	public static final String PERIMETER = "Perimeter";
 	public static final String BOUNDING_PREFERENCES = "Bounding Preferences";
-	public static final String MEAN = "Mean Gray Value";
-	public static final String MODAL = "Modal Gray Value";
+	public static final String MEAN = "Mean Grey Value";
+	public static final String MODAL = "Modal Grey Value";
 	public static final String CENTROID = "Centroid";
 	public static final String FIT_ELLIPSE = "Fit Ellipse";
 
