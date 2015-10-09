@@ -10,6 +10,7 @@ import image.ApplicationMain;
 import image.models.Measurement;
 import image.models.Result;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,6 +21,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -67,9 +69,17 @@ public class AnalysisResource {
             }
             path.toFile().createNewFile();
 
-            URL website = new URL(image);
-            Files.copy(website.openStream(), path, StandardCopyOption.REPLACE_EXISTING);
-            BufferedImage bufferedImage = ImageIO.read(new FileInputStream(path.toFile()));
+            BufferedImage bufferedImage = null;
+            if (image.startsWith("data:image")) {
+                String base64Image = image.split(",")[1];
+                byte[] decoded = Base64.getDecoder().decode(base64Image.getBytes());
+                bufferedImage = ImageIO.read(new ByteArrayInputStream(decoded));
+            } else {
+                URL website = new URL(image);
+                Files.copy(website.openStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                bufferedImage = ImageIO.read(new FileInputStream(path.toFile()));
+            }
+
             ImagePlus imagePlus = new ImagePlus("theTitle", bufferedImage);
 
             Measurement measurementModel = new Measurement();
