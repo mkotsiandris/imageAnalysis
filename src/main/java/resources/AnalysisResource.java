@@ -11,17 +11,13 @@ import image.models.Measurement;
 import image.models.Result;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -30,15 +26,12 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.apache.commons.codec.binary.Base64;
 import web.IndexController;
 
 /**
@@ -72,7 +65,7 @@ public class AnalysisResource {
             BufferedImage bufferedImage = null;
             if (image.startsWith("data:image")) {
                 String base64Image = image.split(",")[1];
-                byte[] decoded = Base64.getDecoder().decode(base64Image.getBytes());
+                byte[] decoded = Base64.decodeBase64(base64Image.getBytes());
                 bufferedImage = ImageIO.read(new ByteArrayInputStream(decoded));
             } else {
                 URL website = new URL(image);
